@@ -10,10 +10,10 @@ import java.util.Random;
  * Time: 14:53
  */
 public class TestData {
-    private String[] text;
-    private String[] pattern;
-    private int expectedIndex;
-    //    private static final String stringBase = "01234";
+    private String testName;
+    private final String[] text;
+    private final String[] pattern;
+    private final int expectedIndex;
     private static final String basePath = "E:\\HsKA\\Semester2\\Algorithmen Labor\\KMP\\tests\\de\\kmp\\";
 
     public String[] getText() {
@@ -32,6 +32,14 @@ public class TestData {
         return basePath;
     }
 
+    public String getTestDataName() {
+        return testName;
+    }
+
+    public void setTestName(String testName) {
+        this.testName = testName;
+    }
+
     public TestData(String[] data, String[] pattern, int expectedIndex) {
         this.text = data;
         this.pattern = pattern;
@@ -46,25 +54,27 @@ public class TestData {
                 fileReader = new FileReader(file);
                 bufferedReader = new BufferedReader(fileReader);
                 String line;
-                while ((line = bufferedReader.readLine()) != null) {
-                    String dataString = line.substring(0, line.indexOf(","));
-                    String[] data;
-                    if (dataString.length() > 1)
-                        data = Arrays.copyOfRange(dataString.split(""), 1, dataString.length() + 1);
-                    else
-                        data = new String[]{dataString.substring(0)};
+                if ((line = bufferedReader.readLine()) == null)
+                    return null;
 
-                    String patternString = line.substring(data.length + 1, line.lastIndexOf(","));
-                    String[] pattern;
-                    if (patternString.length() > 1)
-                        pattern = Arrays.copyOfRange(patternString.split(""), 1, patternString.length() + 1);
-                    else
-                        pattern = new String[]{patternString.substring(0)};
+                String dataString = line.substring(0, line.indexOf(","));
+                String[] data;
+                if (dataString.length() > 1)
+                    data = Arrays.copyOfRange(dataString.split(""), 1, dataString.length() + 1);
+                else
+                    data = new String[]{dataString.substring(0)};
 
-                    String index = line.substring(line.lastIndexOf(",") + 1);
+                String patternString = line.substring(data.length + 1, line.lastIndexOf(","));
+                String[] pattern;
+                if (patternString.length() > 1)
+                    pattern = Arrays.copyOfRange(patternString.split(""), 1, patternString.length() + 1);
+                else
+                    pattern = new String[]{patternString.substring(0)};
 
-                    return new TestData(data, pattern, Integer.valueOf(index));
-                }
+                String index = line.substring(line.lastIndexOf(",") + 1);
+
+                TestData testData = new TestData(data, pattern, Integer.valueOf(index));
+                testData.setTestName(file.getName());
             } catch (Exception ex) {
                 ex.printStackTrace();
             } finally {
@@ -79,12 +89,18 @@ public class TestData {
         return null;
     }
 
-    public static boolean generateTestData(File file, int patternLength, int textLength, int patternPos) {
+    public static TestData generateTestData(int patternLength, int textLength, int patternPos) {
+        Random random = new Random(System.currentTimeMillis());
+        String[] pattern = generatePattern(patternLength, random);
+        String[] text = generateText(textLength, pattern, patternPos, random);
+        return new TestData(text, pattern, patternPos);
+    }
+
+    public static boolean generateTestDataFile(File file, int patternLength, int textLength, int patternPos) {
         try {
-            Random random = new Random(System.currentTimeMillis());
-            String[] pattern = generatePattern(patternLength, random);
-            String[] text = generateText(textLength, pattern, patternPos);
-            saveTestData(file, new TestData(text, pattern, patternPos));
+            TestData testData = generateTestData(patternLength, textLength, patternPos);
+            testData.setTestName(file.getName());
+            saveTestData(file, testData);
         } catch (Exception ex) {
             ex.printStackTrace();
             return false;
@@ -92,21 +108,34 @@ public class TestData {
         return true;
     }
 
-    private static String[] generateText(int textLength, String[] pattern, int patternPos) {
+    private static String[] generateText(int textLength, String[] pattern, int patternPos, Random random) {
         String[] text = new String[textLength];
-        int indexCtr = 0;
-        while (text.length < textLength) {
-            int length = getSubPatternLength(text.length, textLength, pattern, patternPos);
-            System.arraycopy(pattern, 0, text, indexCtr, length);
-            indexCtr += length;
+        int textIndex = 0;
+        while (text.length > textIndex) {
+            int length = getSubPatternLength(textIndex, textLength, pattern.length, patternPos, random);
+            if (length == 0)
+                length++;
+            System.arraycopy(pattern, 0, text, textIndex, length);
+            textIndex += length;
         }
         return text;
     }
 
-    private static int getSubPatternLength(int currentTextLength, int textLength, String[] pattern, int patternPos) {
-
-
-        return 10;
+    private static int getSubPatternLength(int currentTextPos, int textLength, int patternLength, int patternPos, Random random) {
+        //------------|---|ppppppppppp|--------------
+        if (currentTextPos < patternPos) {
+            if (currentTextPos + patternLength < patternPos) {
+                return random.nextInt(patternLength - 1);
+            } else {
+                return patternPos - currentTextPos - 1;
+            }
+        } else {
+            if (currentTextPos == patternPos) {
+                return patternLength;
+            } else {
+                return Math.min(random.nextInt(patternLength - 1), textLength - currentTextPos);
+            }
+        }
     }
 
     private static String[] generatePattern(int patternLength, Random random) {
@@ -117,35 +146,6 @@ public class TestData {
         pattern[patternLength - 1] = "@";
         return pattern;
     }
-
-//    public static boolean generateTestData(File file, int numberOfEntities, int maxDataLength) {
-//        try {
-//            Random generator = new Random(System.currentTimeMillis());
-//            List<TestData> testData = new ArrayList<TestData>();
-//            for (int iii = 0; iii < numberOfEntities; iii++) {
-//                testData.add(generateDataEntity(generator, maxDataLength));
-//            }
-//            saveTestData(file, testData);
-//        } catch (Exception ex) {
-//            ex.printStackTrace();
-//            return false;
-//        }
-//        return true;
-//    }
-//
-//    private static TestData generateDataEntity(Random random, int maxDataLength) {
-//        String[] dataArray = new String[random.nextInt(maxDataLength) + 1];
-//        String[] patternArray = new String[random.nextInt(dataArray.length) / 50 + 1];
-//        int matchIndex = dataArray.length - patternArray.length == 0 ? 0 : random.nextInt(dataArray.length - patternArray.length);
-//
-//        for (int iii = 0; iii < dataArray.length; iii++) {
-//            dataArray[iii] = iii == matchIndex ? "@" : String.valueOf(stringBase.charAt(random.nextInt(stringBase.length())));
-//            if (iii >= matchIndex && iii < matchIndex + patternArray.length)
-//                patternArray[iii - matchIndex] = dataArray[iii];
-//        }
-//
-//        return new TestData(dataArray, patternArray, matchIndex);
-//    }
 
     private static void saveTestData(File file, TestData testData) throws IOException {
         FileWriter fileWriter = null;

@@ -14,17 +14,25 @@ import java.util.List;
  */
 public class SearchTest {
 
-    @Test
-    public void testSearch() throws Exception {
-        List<ISearch> searcherList = new ArrayList<ISearch>();
+    private List<ISearch> searcherList = null;
+
+    public SearchTest() {
+        searcherList = new ArrayList<ISearch>();
         searcherList.add(new SearchNaive());
         searcherList.add(new SearchKMP());
-
-        File file = new File(TestData.getBasePath() + "TestData01.txt");
-        TestData.generateTestData(file, 1000, 100000, 99000);
-        TestData testData = TestData.read(file);
-
-        boolean success = TestHelper.search(searcherList, testData);
-        Assert.assertTrue(success);
     }
+
+    @Test
+    public void testSearchNormal() throws Exception {
+        File file = new File(TestData.getBasePath() + "TestData001.txt");
+        //TestData.generateTestDataFile(file, 1000, 100000, 99000);
+        TestData testData = TestData.read(file);
+        Assert.assertTrue(TestHelper.search(searcherList, testData, 1000, "TestData0001.txt"));
+    }
+
+    public void testSearchPatternNotIncluded() throws Exception {
+//         Assert.assertTrue(TestHelper.search(searcherList, TestData.generateTestData(0, 1000, -1), 1, "Pattern not included."));
+    }
+
+
 }

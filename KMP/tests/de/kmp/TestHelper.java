@@ -9,10 +9,16 @@ import java.util.List;
  */
 public abstract class TestHelper {
 
-    public static boolean search(List<ISearch> searcherList, TestData testData) {
+    public static boolean search(List<ISearch> searcherList, TestData testData, int loops, String testTitle) {
+        System.out.println("Test " + testTitle + " (" + loops + " loops each search type)");
         boolean success = true;
         for (ISearch searcher : searcherList) {
-            search(searcher, testData, success);
+            long start = System.currentTimeMillis();
+            for (int iii = 0; iii < loops; iii++) {
+                search(searcher, testData, success);
+            }
+            long end = System.currentTimeMillis();
+            System.out.println(searcher.getClass().getName() + " mean search time: " + (end - start) / loops + "ms");
         }
         return success;
     }
