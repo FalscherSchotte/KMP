@@ -13,7 +13,6 @@ import java.util.List;
  * Time: 12:07
  */
 public class SearchTest {
-
     private List<ISearch> searcherList = null;
 
     public SearchTest() {
@@ -23,16 +22,55 @@ public class SearchTest {
     }
 
     @Test
-    public void testSearchNormal() throws Exception {
+    public void testSearchNormal() {
         File file = new File(TestData.getBasePath() + "TestData001.txt");
         //TestData.generateTestDataFile(file, 1000, 100000, 99000);
         TestData testData = TestData.read(file);
         Assert.assertTrue(TestHelper.search(searcherList, testData, 1000, "TestData0001.txt"));
     }
 
-    public void testSearchPatternNotIncluded() throws Exception {
-//         Assert.assertTrue(TestHelper.search(searcherList, TestData.generateTestData(0, 1000, -1), 1, "Pattern not included."));
+    @Test
+    public void testSearchPatternAtTheBeginning() {
+        Assert.assertTrue(TestHelper.search(searcherList, TestData.generateTestData(1000, 100000, 0), 1000, "Pattern at the beginning."));
     }
 
+    @Test
+    public void testSearchPatternInTheMiddle() {
+        Assert.assertTrue(TestHelper.search(searcherList, TestData.generateTestData(1000, 100000, 50000), 1000, "Pattern in the middle."));
+    }
 
+    @Test
+    public void testSearchPatternAtTheEnd() {
+        Assert.assertTrue(TestHelper.search(searcherList, TestData.generateTestData(1000, 100000, 99000), 1000, "Pattern at the end."));
+    }
+
+    @Test
+    public void testSearchPatternNotIncluded() {
+        TestData testData = new TestData(new String[]{"0", "0", "0"}, new String[]{"0", "1"}, -1);
+        Assert.assertTrue(TestHelper.search(searcherList, testData, 1, "Pattern not included."));
+    }
+
+    @Test
+    public void testSearchPatternTooLarge() {
+        TestData testData = new TestData(new String[]{"0", "0"}, new String[]{"0", "0", "1"}, -1);
+        Assert.assertTrue(TestHelper.search(searcherList, testData, 1, "Pattern too large."));
+    }
+
+    @Test
+    public void testSearchPatternNull() {
+        TestData testData = new TestData(null, new String[]{"0"}, -1);
+        Assert.assertTrue(TestHelper.search(searcherList, testData, 1, "Pattern null."));
+    }
+
+    @Test
+    public void testSearchTextNull() {
+        TestData testData = new TestData(new String[]{"0"}, null, -1);
+        Assert.assertTrue(TestHelper.search(searcherList, testData, 1, "Text null."));
+    }
+
+    @Test
+    public void testSearchPatternAndTextNull() {
+        TestData testData = new TestData(null, null, -1);
+        Assert.assertTrue(TestHelper.search(searcherList, testData, 1, "Pattern and Text null."));
+    }
 }

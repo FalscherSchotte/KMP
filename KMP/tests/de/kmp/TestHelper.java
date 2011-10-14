@@ -10,12 +10,12 @@ import java.util.List;
 public abstract class TestHelper {
 
     public static boolean search(List<ISearch> searcherList, TestData testData, int loops, String testTitle) {
-        System.out.println("Test " + testTitle + " (" + loops + " loops each search type)");
-        boolean success = true;
+        System.out.println("Test " + testTitle + " (" + loops + " loop(s) each search type)");
+        Boolean success = true;
         for (ISearch searcher : searcherList) {
             long start = System.currentTimeMillis();
             for (int iii = 0; iii < loops; iii++) {
-                search(searcher, testData, success);
+                success = success ? search(searcher, testData) : success;
             }
             long end = System.currentTimeMillis();
             System.out.println(searcher.getClass().getName() + " mean search time: " + (end - start) / loops + "ms");
@@ -23,16 +23,17 @@ public abstract class TestHelper {
         return success;
     }
 
-    private static void search(ISearch searcher, TestData testData, boolean success) {
+    private static boolean search(ISearch searcher, TestData testData) {
         try {
             int resultIndex = searcher.search(testData.getText(), testData.getPattern());
             if (resultIndex != testData.getExpectedIndex()) {
-                success = false;
                 System.out.println("Test failed for " + searcher.getClass().getName() + ". (should be " + testData.getExpectedIndex() + ", but was " + resultIndex + ")");
+                return false;
             }
+            return true;
         } catch (Exception ex) {
             ex.printStackTrace();
-            success = false;
+            return false;
         }
     }
 }

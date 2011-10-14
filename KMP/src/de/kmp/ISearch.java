@@ -6,5 +6,5 @@ package de.kmp;
  * Time: 14:40
  */
 public interface ISearch {
-    int search(String[] data, String[] pattern);
+    int search(String[] text, String[] pattern);
 }

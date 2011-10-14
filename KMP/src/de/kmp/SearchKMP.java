@@ -7,8 +7,10 @@ package de.kmp;
  */
 public class SearchKMP implements ISearch {
 
-    public int search(String[] data, String[] pattern) {
-        return kmpSearch(pattern, analyzePrefix(pattern), data);
+    public int search(String[] text, String[] pattern) {
+        if(text == null || pattern == null || text.length == 0 || pattern.length == 0 || pattern.length > text.length)
+            return -1;
+        return kmpSearch(pattern, analyzePrefix(pattern), text);
     }
 
     private int[] analyzePrefix(String[] pattern) { //v with length n

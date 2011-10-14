@@ -11,9 +11,9 @@ import java.util.Random;
  */
 public class TestData {
     private String testName;
-    private final String[] text;
-    private final String[] pattern;
-    private final int expectedIndex;
+    private String[] text;
+    private String[] pattern;
+    private int expectedIndex;
     private static final String basePath = "E:\\HsKA\\Semester2\\Algorithmen Labor\\KMP\\tests\\de\\kmp\\";
 
     public String[] getText() {
@@ -38,6 +38,18 @@ public class TestData {
 
     public void setTestName(String testName) {
         this.testName = testName;
+    }
+
+    public void setText(String[] text) {
+        this.text = text;
+    }
+
+    public void setPattern(String[] pattern) {
+        this.pattern = pattern;
+    }
+
+    public void setExpectedIndex(int expectedIndex) {
+        this.expectedIndex = expectedIndex;
     }
 
     public TestData(String[] data, String[] pattern, int expectedIndex) {
@@ -75,6 +87,7 @@ public class TestData {
 
                 TestData testData = new TestData(data, pattern, Integer.valueOf(index));
                 testData.setTestName(file.getName());
+                return testData;
             } catch (Exception ex) {
                 ex.printStackTrace();
             } finally {
@@ -115,7 +128,7 @@ public class TestData {
             int length = getSubPatternLength(textIndex, textLength, pattern.length, patternPos, random);
             if (length == 0)
                 length++;
-            System.arraycopy(pattern, 0, text, textIndex, length);
+            System.arraycopy(pattern.length > 0 ? pattern : new String[]{"0"}, 0, text, textIndex, length);
             textIndex += length;
         }
         return text;
@@ -133,7 +146,7 @@ public class TestData {
             if (currentTextPos == patternPos) {
                 return patternLength;
             } else {
-                return Math.min(random.nextInt(patternLength - 1), textLength - currentTextPos);
+                return Math.min(random.nextInt(Math.max(patternLength - 1, 1)), textLength - currentTextPos);
             }
         }
     }
@@ -143,7 +156,8 @@ public class TestData {
         for (int iii = 0; iii < patternLength - 1; iii++) {
             pattern[iii] = random.nextInt(2) == 0 ? "0" : "1";
         }
-        pattern[patternLength - 1] = "@";
+        if (patternLength > 0)
+            pattern[patternLength - 1] = "@";
         return pattern;
     }
 
