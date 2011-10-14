@@ -4,11 +4,12 @@ package de.kmp;
  * User: FloLap
  * Date: 07.10.11
  * Time: 19:30
+ * Knuth-Morris-Pratt- / KMP-Search-Algorithm
  */
 public class SearchKMP implements ISearch {
 
     public int search(String[] text, String[] pattern) {
-        if(text == null || pattern == null || text.length == 0 || pattern.length == 0 || pattern.length > text.length)
+        if (text == null || pattern == null || text.length == 0 || pattern.length == 0 || pattern.length > text.length)
             return -1;
         return kmpSearch(pattern, analyzePrefix(pattern), text);
     }
