@@ -73,4 +73,22 @@ public class SearchTest {
         TestData testData = new TestData(null, null, -1);
         Assert.assertTrue(TestHelper.search(searcherList, testData, 1, "Pattern and Text null."));
     }
+
+    @Test
+    public void testSearchPatternEmpty() {
+        TestData testData = new TestData(new String[]{"0", "0", "0"}, new String[]{}, -1);
+        Assert.assertTrue(TestHelper.search(searcherList, testData, 1, "Pattern empty."));
+    }
+
+    @Test
+    public void testSearchTextEmpty() {
+        TestData testData = new TestData(new String[]{}, new String[]{"0", "0"}, -1);
+        Assert.assertTrue(TestHelper.search(searcherList, testData, 1, "Text empty."));
+    }
+
+    @Test
+    public void testSearchPatternAndTextEmpty() {
+        TestData testData = new TestData(new String[]{}, new String[]{}, -1);
+        Assert.assertTrue(TestHelper.search(searcherList, testData, 1, "Pattern and text empty."));
+    }
 }
