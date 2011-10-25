@@ -1,7 +1,8 @@
 package de.kmp;
 
 import java.io.*;
-import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 /**
@@ -14,7 +15,7 @@ public class TestData {
     private String[] text;
     private String[] pattern;
     private int expectedIndex;
-    private static final String basePath = "E:\\HsKA\\Semester2\\Algorithmen Labor\\KMP\\tests\\de\\kmp\\";
+    private static final String basePath = "E:\\HsKA\\Semester2\\Algorithmen Labor\\";
 
     public String[] getText() {
         return text;
@@ -58,67 +59,12 @@ public class TestData {
         this.expectedIndex = expectedIndex;
     }
 
-    public static TestData read(File file) {
-        FileReader fileReader = null;
-        BufferedReader bufferedReader = null;
-        try {
-            try {
-                fileReader = new FileReader(file);
-                bufferedReader = new BufferedReader(fileReader);
-                String line;
-                if ((line = bufferedReader.readLine()) == null)
-                    return null;
-
-                String dataString = line.substring(0, line.indexOf(","));
-                String[] data;
-                if (dataString.length() > 1)
-                    data = Arrays.copyOfRange(dataString.split(""), 1, dataString.length() + 1);
-                else
-                    data = new String[]{dataString.substring(0)};
-
-                String patternString = line.substring(data.length + 1, line.lastIndexOf(","));
-                String[] pattern;
-                if (patternString.length() > 1)
-                    pattern = Arrays.copyOfRange(patternString.split(""), 1, patternString.length() + 1);
-                else
-                    pattern = new String[]{patternString.substring(0)};
-
-                String index = line.substring(line.lastIndexOf(",") + 1);
-
-                TestData testData = new TestData(data, pattern, Integer.valueOf(index));
-                testData.setTestName(file.getName());
-                return testData;
-            } catch (Exception ex) {
-                ex.printStackTrace();
-            } finally {
-                if (bufferedReader != null)
-                    bufferedReader.close();
-                if (fileReader != null)
-                    fileReader.close();
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
 
     public static TestData generateTestData(int patternLength, int textLength, int patternPos) {
         Random random = new Random(System.currentTimeMillis());
         String[] pattern = generatePattern(patternLength, random);
         String[] text = generateText(textLength, pattern, patternPos, random);
         return new TestData(text, pattern, patternPos);
-    }
-
-    public static boolean generateTestDataFile(File file, int patternLength, int textLength, int patternPos) {
-        try {
-            TestData testData = generateTestData(patternLength, textLength, patternPos);
-            testData.setTestName(file.getName());
-            saveTestData(file, testData);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            return false;
-        }
-        return true;
     }
 
     private static String[] generateText(int textLength, String[] pattern, int patternPos, Random random) {
@@ -161,31 +107,159 @@ public class TestData {
         return pattern;
     }
 
-    private static void saveTestData(File file, TestData testData) throws IOException {
-        FileWriter fileWriter = null;
-        BufferedWriter bufferedWriter = null;
+
+    public static boolean generateTestDataFiles(File patternFile, long patternLength, File textFile, long patternPos) {
         try {
-            fileWriter = new FileWriter(file);
-            bufferedWriter = new BufferedWriter(fileWriter);
-
-            for (String element : testData.getText()) {
-                bufferedWriter.write(element);
-            }
-            bufferedWriter.write(",");
-            for (String element : testData.getPattern()) {
-                bufferedWriter.write(element);
-            }
-            bufferedWriter.write("," + testData.getExpectedIndex());
-            bufferedWriter.newLine();
-
-            bufferedWriter.flush();
+            Random random = new Random(System.currentTimeMillis());
+            if (!createPatternFile(patternFile, patternLength, random))
+                return false;
+            if (!createTextFile(patternFile, patternLength, patternPos, textFile, random))
+                return false;
         } catch (Exception ex) {
             ex.printStackTrace();
-        } finally {
-            if (bufferedWriter != null)
-                bufferedWriter.close();
-            if (fileWriter != null)
-                fileWriter.close();
+            return false;
+        }
+        return true;
+    }
+
+    private static boolean createPatternFile(File patternFile, long patternLength, Random random) throws IOException {
+        InvalidPatternWriter writer = new InvalidPatternWriter(patternLength, random);
+        return writer.write(patternFile);
+    }
+
+    private static boolean createTextFile(File patternFile, long patternLength, long patternPos, File textFile, Random random) throws IOException {
+        InvalidFileWriter writer = new InvalidTextWriter(patternFile, patternLength, patternPos, random);
+        return writer.write(textFile);
+    }
+
+    public static String[] readStringArray(File file) {
+        FileReader fileReader = null;
+        BufferedReader bufferedReader = null;
+        try {
+            try {
+                fileReader = new FileReader(file);
+                bufferedReader = new BufferedReader(fileReader);
+                List<String> stringList = new ArrayList<String>();
+                String line;
+                while ((line = bufferedReader.readLine()) != null) {
+                    for (int i = 0; i < line.length(); i++) {
+                        stringList.add(line.substring(i, i + 1));
+                    }
+                }
+                return stringList.toArray(new String[stringList.size()]);
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            } finally {
+                if (bufferedReader != null)
+                    bufferedReader.close();
+                if (fileReader != null)
+                    fileReader.close();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+
+    private static abstract class InvalidFileWriter {
+        public boolean write(File file) throws IOException {
+            FileWriter fileWriter = null;
+            BufferedWriter bufferedWriter = null;
+            try {
+                fileWriter = new FileWriter(file);
+                bufferedWriter = new BufferedWriter(fileWriter);
+
+                String element;
+                while ((element = getNextString()) != null) {
+                    if(!element.equals("\u0000"))
+                        bufferedWriter.write(element);
+                }
+                //flush?
+            } catch (Exception ex) {
+                ex.printStackTrace();
+                return false;
+            } finally {
+                if (bufferedWriter != null)
+                    bufferedWriter.close();
+                if (fileWriter != null)
+                    fileWriter.close();
+            }
+            return true;
+        }
+
+        public abstract String getNextString() throws IOException;
+    }
+
+    private static class InvalidPatternWriter extends InvalidFileWriter {
+        private long patternLength;
+        private long patternPosition;
+        private Random random;
+
+        public InvalidPatternWriter(long patternLength, Random random) {
+            this.patternLength = patternLength;
+            this.patternPosition = 0;
+            this.random = random;
+        }
+
+        @Override
+        public String getNextString() {
+            if (patternPosition < patternLength - 1) {
+                patternPosition++;
+                return random.nextBoolean() == true ? "0" : "1";
+            } else if (patternPosition == patternLength - 1) {
+                patternPosition++;
+                return "@";
+            } else {
+                return null;
+            }
+        }
+    }
+
+    private static class InvalidTextWriter extends InvalidFileWriter {
+        private File patternFile;
+        private long patternPlacementPos;
+        private long textPos;
+        private Random random;
+        private int maxNext;
+        private FileReader fileReader = null;
+        private boolean patternHasNext = true;
+
+        public InvalidTextWriter(File patternFile, long patternLength, long patternPos, Random random) {
+            this.patternFile = patternFile;
+            this.patternPlacementPos = patternPos;
+            this.random = random;
+            this.textPos = 0;
+            this.maxNext = (int) (patternLength > Integer.MAX_VALUE ? Integer.MAX_VALUE : patternLength);
+        }
+
+        @Override
+        public String getNextString() throws IOException {
+            if (textPos < patternPlacementPos) {
+                String nextString = Next(random.nextInt((int) Math.min(maxNext, patternPlacementPos - textPos + 1)), true);
+                textPos += nextString.length();
+                return nextString;
+            } else {
+                if (patternHasNext) {
+                    return Next(1, false);
+                } else {
+                    fileReader.close();
+                    return null;
+                }
+            }
+        }
+
+        private String Next(int length, boolean reset) throws IOException {
+            if (fileReader == null)
+                fileReader = new FileReader(patternFile);
+            char[] buff = new char[length];
+            patternHasNext = fileReader.read(buff, 0, length) != -1;
+            if (reset) {
+                fileReader.close();
+                fileReader = new FileReader(patternFile);
+                patternHasNext = true;
+            }
+            return String.valueOf(buff);
         }
     }
 }

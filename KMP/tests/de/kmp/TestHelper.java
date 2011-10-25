@@ -20,6 +20,7 @@ public abstract class TestHelper {
             long end = System.currentTimeMillis();
             System.out.println(searcher.getClass().getName() + " mean search time: " + (end - start) / loops + "ms");
         }
+        System.out.println("");
         return success;
     }
 

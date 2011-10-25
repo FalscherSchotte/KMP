@@ -12,6 +12,7 @@ import java.util.List;
  * Date: 13.10.11
  * Time: 12:07
  */
+@SuppressWarnings({"ResultOfMethodCallIgnored"})
 public class SearchTest {
     private List<ISearch> searcherList = null;
 
@@ -20,14 +21,14 @@ public class SearchTest {
         searcherList.add(new SearchNaive());
         searcherList.add(new SearchKMP());
     }
-
-    @Test
-    public void testSearchNormal() {
-        File file = new File(TestData.getBasePath() + "TestData001.txt");
-        //TestData.generateTestDataFile(file, 1000, 100000, 99000);
-        TestData testData = TestData.read(file);
-        Assert.assertTrue(TestHelper.search(searcherList, testData, 1000, "TestData0001.txt"));
-    }
+//
+//    @Test
+//    public void testSearchNormal() {
+//        File file = new File(TestData.getBasePath() + "TestData001.txt");
+//        //TestData.generateTestDataFile(file, 1000, 100000, 99000);
+//        TestData testData = TestData.read(file);
+//        Assert.assertTrue(TestHelper.search(searcherList, testData, 1000, "TestData0001.txt"));
+//    }
 
     @Test
     public void testSearchPatternAtTheBeginning() {
@@ -90,5 +91,53 @@ public class SearchTest {
     public void testSearchPatternAndTextEmpty() {
         TestData testData = new TestData(new String[]{}, new String[]{}, -1);
         Assert.assertTrue(TestHelper.search(searcherList, testData, 1, "Pattern and text empty."));
+    }
+
+    @Test
+    public void testWriteReadInfiniteSmall() {
+        File patternFile = new File(TestData.getBasePath() + "Pattern.txt");
+        File textFile = new File(TestData.getBasePath() + "Text.txt");
+        long patternLength = 2;
+        long patternPos = 1;
+
+        TestData.generateTestDataFiles(patternFile, patternLength, textFile, patternPos);
+        TestData testData = new TestData(TestData.readStringArray(textFile), TestData.readStringArray(patternFile), (int) patternPos);
+        Assert.assertTrue(TestHelper.search(searcherList, testData, 1000,
+                "File search with pattern length " + patternLength + " at pos " + patternPos + ". "));
+
+        textFile.delete();
+        patternFile.delete();
+    }
+
+    @Test
+    public void testWriteReadInfiniteMedium() {
+        File patternFile = new File(TestData.getBasePath() + "Pattern.txt");
+        File textFile = new File(TestData.getBasePath() + "Text.txt");
+        long patternLength = 1000;
+        long patternPos = 99000;
+
+        TestData.generateTestDataFiles(patternFile, patternLength, textFile, patternPos);
+        TestData testData = new TestData(TestData.readStringArray(textFile), TestData.readStringArray(patternFile), (int) patternPos);
+        Assert.assertTrue(TestHelper.search(searcherList, testData, 1000,
+                "File search with pattern length " + patternLength + " at pos " + patternPos + ". "));
+
+        textFile.delete();
+        patternFile.delete();
+    }
+
+    @Test
+    public void testWriteReadSearchInfiniteSmall() {
+        File patternFile = new File(TestData.getBasePath() + "Pattern.txt");
+        File textFile = new File(TestData.getBasePath() + "Text.txt");
+        long patternLength = 10;
+        long patternPos = 10;
+
+        TestData.generateTestDataFiles(patternFile, patternLength, textFile, patternPos);
+        SearchInfiniteKMP searcher = new SearchInfiniteKMP();
+        long foundIndex = searcher.search(patternFile, textFile);
+        Assert.assertEquals("Search infinite small.", patternPos, foundIndex);
+
+        textFile.delete();
+        patternFile.delete();
     }
 }

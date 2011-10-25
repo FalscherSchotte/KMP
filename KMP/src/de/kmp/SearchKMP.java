@@ -1,5 +1,7 @@
 package de.kmp;
 
+import java.io.*;
+
 /**
  * User: FloLap
  * Date: 07.10.11
