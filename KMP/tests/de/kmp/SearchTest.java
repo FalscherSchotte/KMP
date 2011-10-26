@@ -102,11 +102,9 @@ public class SearchTest {
 
         TestData.generateTestDataFiles(patternFile, patternLength, textFile, patternPos);
         TestData testData = new TestData(TestData.readStringArray(textFile), TestData.readStringArray(patternFile), (int) patternPos);
+
         Assert.assertTrue(TestHelper.search(searcherList, testData, 1000,
                 "File search with pattern length " + patternLength + " at pos " + patternPos + ". "));
-
-        textFile.delete();
-        patternFile.delete();
     }
 
     @Test
@@ -118,11 +116,9 @@ public class SearchTest {
 
         TestData.generateTestDataFiles(patternFile, patternLength, textFile, patternPos);
         TestData testData = new TestData(TestData.readStringArray(textFile), TestData.readStringArray(patternFile), (int) patternPos);
+
         Assert.assertTrue(TestHelper.search(searcherList, testData, 1000,
                 "File search with pattern length " + patternLength + " at pos " + patternPos + ". "));
-
-        textFile.delete();
-        patternFile.delete();
     }
 
     @Test
@@ -135,9 +131,7 @@ public class SearchTest {
         TestData.generateTestDataFiles(patternFile, patternLength, textFile, patternPos);
         SearchInfiniteKMP searcher = new SearchInfiniteKMP();
         long foundIndex = searcher.search(patternFile, textFile);
-        Assert.assertEquals("Search infinite small.", patternPos, foundIndex);
 
-        textFile.delete();
-        patternFile.delete();
+        Assert.assertEquals("Search infinite small.", patternPos, foundIndex);
     }
 }
