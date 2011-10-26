@@ -16,7 +16,7 @@ public class SearchKMP implements ISearch {
         return kmpSearch(pattern, analyzePrefix(pattern), text);
     }
 
-    private int[] analyzePrefix(String[] pattern) { //v with length n
+    public static int[] analyzePrefix(String[] pattern) { //v with length n
         int patternPos = 0; //i - current Position in pattern
         int prefixLength = -1; //j - length of the found prefix
         int[] prefixValueArray = new int[pattern.length + 1]; //N[] with length n+1
@@ -36,7 +36,7 @@ public class SearchKMP implements ISearch {
         return prefixValueArray;
     }
 
-    private int kmpSearch(String[] pattern, int[] prefixValueArray, String[] textToAnalyze) {
+    private static int kmpSearch(String[] pattern, int[] prefixValueArray, String[] textToAnalyze) {
         //pattern = v with length n
         //prefixValueArray = N with length n+1
         //textToAnalyze = t with length m

@@ -3,7 +3,9 @@ package de.kmp;
 import junit.framework.Assert;
 import org.junit.Test;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -93,45 +95,4 @@ public class SearchTest {
         Assert.assertTrue(TestHelper.search(searcherList, testData, 1, "Pattern and text empty."));
     }
 
-    @Test
-    public void testWriteReadInfiniteSmall() {
-        File patternFile = new File(TestData.getBasePath() + "Pattern.txt");
-        File textFile = new File(TestData.getBasePath() + "Text.txt");
-        long patternLength = 2;
-        long patternPos = 1;
-
-        TestData.generateTestDataFiles(patternFile, patternLength, textFile, patternPos);
-        TestData testData = new TestData(TestData.readStringArray(textFile), TestData.readStringArray(patternFile), (int) patternPos);
-
-        Assert.assertTrue(TestHelper.search(searcherList, testData, 1000,
-                "File search with pattern length " + patternLength + " at pos " + patternPos + ". "));
-    }
-
-    @Test
-    public void testWriteReadInfiniteMedium() {
-        File patternFile = new File(TestData.getBasePath() + "Pattern.txt");
-        File textFile = new File(TestData.getBasePath() + "Text.txt");
-        long patternLength = 1000;
-        long patternPos = 99000;
-
-        TestData.generateTestDataFiles(patternFile, patternLength, textFile, patternPos);
-        TestData testData = new TestData(TestData.readStringArray(textFile), TestData.readStringArray(patternFile), (int) patternPos);
-
-        Assert.assertTrue(TestHelper.search(searcherList, testData, 1000,
-                "File search with pattern length " + patternLength + " at pos " + patternPos + ". "));
-    }
-
-    @Test
-    public void testWriteReadSearchInfiniteSmall() {
-        File patternFile = new File(TestData.getBasePath() + "Pattern.txt");
-        File textFile = new File(TestData.getBasePath() + "Text.txt");
-        long patternLength = 10;
-        long patternPos = 10;
-
-        TestData.generateTestDataFiles(patternFile, patternLength, textFile, patternPos);
-        SearchInfiniteKMP searcher = new SearchInfiniteKMP();
-        long foundIndex = searcher.search(patternFile, textFile);
-
-        Assert.assertEquals("Search infinite small.", patternPos, foundIndex);
-    }
 }
