@@ -37,14 +37,13 @@ public class CustomWriter {
     }
 
     public void write(String value) throws IOException {
-        writer.write(value);
-        writer.flush();
+        bufferedWriter.write(value);
+        bufferedWriter.flush();
     }
 
     public void writeLine(String value) throws IOException {
-        writer.write(value);
+        bufferedWriter.write(value);
         bufferedWriter.newLine();
-        writer.flush();
         bufferedWriter.flush();
     }
 

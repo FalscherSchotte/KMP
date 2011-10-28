@@ -6,6 +6,7 @@ import org.junit.Test;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Random;
 
 /**
  * User: FloLap
@@ -109,6 +110,7 @@ public class CustomReaderTest {
             ex.printStackTrace();
             Assert.assertNotNull("CustomReader exception occured!", null);
         } finally {
+            assert customReader != null;
             customReader.close();
         }
     }
@@ -149,5 +151,63 @@ public class CustomReaderTest {
             ex.printStackTrace();
             Assert.assertNotNull("CustomReader exception occured!", null);
         }
+    }
+
+    @Test
+    public void testSpeedJumping() {
+        try {
+            int size = 10000;
+            writeTestFile(size);
+
+            CustomReader reader = new CustomReader(testFile);
+            Random random = new Random(System.currentTimeMillis());
+            long start = System.currentTimeMillis();
+            for (int i = 0; i < 10000; i++) {
+                reader.read(random.nextInt(size));
+            }
+            System.out.println("Test speed jumping 10000 times in " + size + " character file took " + (System.currentTimeMillis() - start) + "ms");
+
+            Assert.assertTrue(true);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            Assert.assertNotNull("CustomReader exception occured!", null);
+        }
+    }
+
+    @Test
+    public void testSpeed() {
+        try {
+            System.out.println("Reading of " + 100 + " elements took " + measureReadSpeed(100) + "ms");
+            System.out.println("Reading of " + 1000 + " elements took " + measureReadSpeed(1000) + "ms");
+            System.out.println("Reading of " + 10000 + " elements took " + measureReadSpeed(10000) + "ms");
+            System.out.println("Reading of " + 100000 + " elements took " + measureReadSpeed(100000) + "ms");
+            System.out.println("Reading of " + 1000000 + " elements took " + measureReadSpeed(1000000) + "ms");
+            System.out.println("Reading of " + 10000000 + " elements took " + measureReadSpeed(10000000) + "ms");
+            Assert.assertTrue(true);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            Assert.assertNotNull("CustomReader exception occured!", null);
+        }
+    }
+
+    private void writeTestFile(long size) throws IOException {
+        FileWriter writer = new FileWriter(testFile);
+        for (long i = 0; i < size; i++) {
+            writer.write(String.valueOf(i));
+            if (i % 10000 == 0)
+                writer.flush();
+        }
+        writer.close();
+    }
+
+    private long measureReadSpeed(long size) throws IOException {
+        writeTestFile(size);
+        CustomReader reader = new CustomReader(testFile);
+        long start = System.currentTimeMillis();
+        while (reader.hasNext()) {
+            reader.readNext();
+        }
+        long end = System.currentTimeMillis();
+        return end - start;
     }
 }
