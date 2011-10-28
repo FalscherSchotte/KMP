@@ -36,25 +36,14 @@ public class CustomLineReader extends CustomReader {
     public String read(long index) throws IOException {
         if (index < 0)
             return null;
-        if (index + 1 < readPointer)
+        if (index < readPointer)
             reset();
         if (index > readPointer) {
             //skip lines, not chars
             long linesToSkip = index - readPointer;
-            long skippedLines = 0;
-            int readChars = 0;
-            String readString = "";
-            while (linesToSkip != skippedLines && readChars != -1) {
-                char[] buffer = new char[1];
-                readChars = reader.read(buffer);
-                readString += String.valueOf(buffer);
-                lookAheadReader.read(buffer);
-                if (readString.contains(CustomLineReader.getLineSeparator())) {
-                    readString = "";
-                    skippedLines++;
-                }
+            for(long i=0; i<linesToSkip; i++){
+                readNext();
             }
-            readPointer += index - readPointer;
         }
         return readNext();
     }

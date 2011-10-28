@@ -61,7 +61,7 @@ public class CustomReader {
     public String read(long index) throws IOException {
         if (index < 0)
             return null;
-        if (index + 1 < readPointer)
+        if (index < readPointer)
             reset();
         if (index > readPointer) {
             reader.skip(index - readPointer);

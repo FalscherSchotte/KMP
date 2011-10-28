@@ -36,7 +36,7 @@ public class SearchKMP implements ISearch {
         return prefixValueArray;
     }
 
-    private static int kmpSearch(String[] pattern, int[] prefixValueArray, String[] textToAnalyze) {
+    public static int kmpSearch(String[] pattern, int[] prefixValueArray, String[] textToAnalyze) {
         //pattern = v with length n
         //prefixValueArray = N with length n+1
         //textToAnalyze = t with length m

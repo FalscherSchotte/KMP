@@ -91,25 +91,25 @@ public class CustomReaderTest {
     }
 
     @Test
-    public void testReadJumpAround() {
+    public void testReadJumpAround() throws IOException {
+        CustomReader customReader = null;
         try {
-            String readValues = "";
-            CustomReader customReader = new CustomReader(testFile);
-            readValues += customReader.readNext();
-            readValues += customReader.read(2);
-            readValues += customReader.read(0);
-            readValues += customReader.readNext();
-            readValues += customReader.read(5);
-            readValues += customReader.readNext();
-            readValues += customReader.readNext();
-            readValues += customReader.read(9);
-            readValues += customReader.read(0);
-
-            Assert.assertEquals("020156790", readValues);
-            customReader.close();
+            customReader = new CustomReader(testFile);
+            Assert.assertEquals("0", customReader.readNext());
+            Assert.assertEquals("2", customReader.read(2));
+            Assert.assertEquals("0", customReader.read(0));
+            Assert.assertEquals("0", customReader.read(0));
+            Assert.assertEquals("1", customReader.readNext());
+            Assert.assertEquals("5", customReader.read(5));
+            Assert.assertEquals("6", customReader.readNext());
+            Assert.assertEquals("7", customReader.readNext());
+            Assert.assertEquals("9", customReader.read(9));
+            Assert.assertEquals("0", customReader.read(0));
         } catch (Exception ex) {
             ex.printStackTrace();
             Assert.assertNotNull("CustomReader exception occured!", null);
+        } finally {
+            customReader.close();
         }
     }
 
