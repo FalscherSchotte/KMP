@@ -4,6 +4,7 @@ import junit.framework.Assert;
 import org.junit.Test;
 
 import java.io.File;
+import java.util.Random;
 
 /**
  * User: FloLap
@@ -89,5 +90,55 @@ public class SearchInfiniteKMPTest {
         System.out.println("Search pattern of size " + patternLength + " in text of size " + (patternLength + patternPos) +
                 " took " + (end - start) + "ms.");
         Assert.assertEquals("Position of pattern", patternPos, index);
+    }
+
+    @Test
+    public void testSearchSmallPatternInLargeFile() throws Exception {
+        File patternFile = new File(TestData.getBasePath() + "PatternTestFile.txt");
+        File textFile = new File(TestData.getBasePath() + "TextTestFile.txt");
+        long patternLength = 10000;
+        long patternPos = 10000000;
+        TestData.generateTestDataFiles(patternFile, patternLength, textFile, patternPos);
+        SearchInfiniteKMP searchInfiniteKMP = new SearchInfiniteKMP();
+        long start = System.currentTimeMillis();
+        long index = searchInfiniteKMP.search(textFile, patternFile);
+        long end = System.currentTimeMillis();
+        System.out.println("Search pattern of size " + patternLength + " in text of size " + (patternLength + patternPos) +
+                " took " + (end - start) + "ms.");
+        Assert.assertEquals("Position of pattern", patternPos, index);
+    }
+
+    @Test
+    public void testSearchRandom() throws Exception {
+        File patternFile = new File(TestData.getBasePath() + "PatternTestFile.txt");
+        File textFile = new File(TestData.getBasePath() + "TextTestFile.txt");
+        Random random = new Random(System.currentTimeMillis());
+        for (int i = 0; i <= 10; i++) {
+            long patternLength = random.nextInt(100000) + 1;
+            long patternPos = random.nextInt(100000) + 1;
+            TestData.generateTestDataFiles(patternFile, patternLength, textFile, patternPos);
+            SearchInfiniteKMP searchInfiniteKMP = new SearchInfiniteKMP();
+            long start = System.currentTimeMillis();
+            long index = searchInfiniteKMP.search(textFile, patternFile);
+            long end = System.currentTimeMillis();
+            System.out.println("Search pattern of size " + patternLength + " in text of size " + (patternLength + patternPos) +
+                    " took " + (end - start) + "ms.");
+            Assert.assertEquals("Position of pattern", patternPos, index);
+        }
+    }
+
+    @Test
+    public void testSearchFixed() throws Exception {
+        File patternFile = new File("E:\\HsKA\\Semester2\\Algorithmen Labor\\KMP\\tests\\de\\kmp\\TestFilePattern.txt");
+        File textFile = new File("E:\\HsKA\\Semester2\\Algorithmen Labor\\KMP\\tests\\de\\kmp\\TestFileText.txt");
+        Assert.assertTrue(patternFile.exists());
+        Assert.assertTrue(textFile.exists());
+
+        SearchInfiniteKMP searchInfiniteKMP = new SearchInfiniteKMP();
+        long start = System.currentTimeMillis();
+        long index = searchInfiniteKMP.search(textFile, patternFile);
+        long end = System.currentTimeMillis();
+        System.out.println("Search pattern took " +(end - start) + "ms.");
+        Assert.assertEquals("Position of pattern", 10000000, index);
     }
 }

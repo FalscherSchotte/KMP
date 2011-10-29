@@ -21,7 +21,11 @@ public class SearchInfiniteKMP {
                 textReader = new CustomReader(textFile);
                 prefixWrapper = new PrefixFileAccessor(getPrefixFile(patternFile));
 
+                long start = System.currentTimeMillis();
                 createPrefixFile(patternReader, prefixWrapper);
+                long end = System.currentTimeMillis();
+                System.out.println("Create prefix files took " + (end - start) + "ms.");
+
                 patternReader.reset();
                 prefixWrapper.reset(false);
 

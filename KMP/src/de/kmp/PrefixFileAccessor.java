@@ -44,7 +44,6 @@ public class PrefixFileAccessor {
                 writer.reset();
             reader.reset();
         }
-
     }
 
     private List<PrefixFileInterval> prefixIntervalList = new ArrayList<PrefixFileInterval>();
