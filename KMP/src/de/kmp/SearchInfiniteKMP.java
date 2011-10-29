@@ -23,7 +23,7 @@ public class SearchInfiniteKMP {
 
                 createPrefixFile(patternReader, prefixWrapper);
                 patternReader.reset();
-                prefixWrapper.reset();
+                prefixWrapper.reset(false);
 
                 return kmpSearch(textReader, patternReader, prefixWrapper);
             } finally {
@@ -38,12 +38,6 @@ public class SearchInfiniteKMP {
             ex.printStackTrace();
             return -1;
         }
-
-
-//        File prefixFile = getPrefixFile(patternFile);
-//        if (!createPrefixFile(patternFile, prefixFile))
-//            return -1;
-//        return kmpSearch(textFile, patternFile, prefixFile);
     }
 
     private static File getPrefixFile(File patternFile) {
@@ -51,17 +45,9 @@ public class SearchInfiniteKMP {
                 patternFile.getPath().lastIndexOf(File.separator) + 1) + "PrefixFile.txt");
     }
 
-    //    public boolean createPrefixFile(File patternFile, File prefixFile) {
     public void createPrefixFile(CustomReader patternReader, PrefixFileAccessor prefixWrapper) throws IOException {
-//        try {
-//            PrefixFileAccessor prefixFileAccessor = null;
-//            CustomReader patternReader = null;
-//            try {
         long patternPos = 0;
         long prefixLength = -1;
-//                prefixFileAccessor = new PrefixFileAccessor(prefixFile);
-//                patternReader = new CustomReader(patternFile);
-
 
         prefixWrapper.write(prefixLength);
         while (patternReader.hasNext()) {
@@ -72,40 +58,20 @@ public class SearchInfiniteKMP {
             prefixLength++;
             prefixWrapper.write(prefixLength);
         }
-//                return true;
-//            } finally {
-//                prefixFileAccessor.close();
-//                patternReader.close();
-//            }
-//        } catch (Exception ex) {
-//            ex.printStackTrace();
-//            return false;
-//        }
     }
 
-    //    public long kmpSearch(File textFile, File patternFile, File prefixFile) {
-    public long kmpSearch(CustomReader textReader, CustomReader patternReader, PrefixFileAccessor prefixWrapper) {
-
-
-        int textPosition = 0;
-        int patternPosition = 0;
-
-        return -1;
-
-
-//        while (textPosition < textToAnalyze.length) { //until end of text
-//            while (patternPosition >= 0 && !textToAnalyze[textPosition].equals(pattern[patternPosition])) {
-//                //Move pattern until text and pattern match at i,j
-//                patternPosition = prefixValueArray[patternPosition];
-//            }
-//
-//            //move to next position
-//            textPosition++;
-//            patternPosition++;
-//
-//            if (patternPosition == pattern.length)
-//                return textPosition - pattern.length; //match
-//        }
-//        return -1; //No match found
+    public long kmpSearch(CustomReader textReader, CustomReader patternReader, PrefixFileAccessor prefixWrapper) throws IOException {
+        long textPosition = 0;
+        long patternPosition = 0;
+        while (textReader.hasNext()) {
+            while (patternPosition >= 0 && !textReader.read(textPosition).equals(patternReader.read(patternPosition))) {
+                patternPosition = prefixWrapper.read(patternPosition);
+            }
+            textPosition++;
+            patternPosition++;
+            if (!patternReader.hasNext())
+                return textPosition - patternReader.getCurrentPosition();
+        }
+        return -1; //No match found
     }
 }

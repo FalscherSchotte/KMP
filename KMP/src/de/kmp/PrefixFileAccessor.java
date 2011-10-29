@@ -23,6 +23,10 @@ public class PrefixFileAccessor {
         }
 
         public void write(long value) throws IOException {
+            writer.write(value);
+        }
+
+        public void writeLine(long value) throws IOException {
             writer.writeLine(value);
         }
 
@@ -35,56 +39,37 @@ public class PrefixFileAccessor {
             reader.close();
         }
 
-        public void reset() throws IOException {
-            writer.reset();
+        public void reset(boolean resetWriter) throws IOException {
+            if (resetWriter)
+                writer.reset();
             reader.reset();
         }
+
     }
 
-//    private CustomLineReader reader;
-//    private CustomWriter writer;
+    private List<PrefixFileInterval> prefixIntervalList = new ArrayList<PrefixFileInterval>();
+    private File prefixBaseFile;
+    private long ctr = 0;
+    private final long separationValue = 10000;
 
-//    public PrefixFileAccessor(File prefixFile) throws IOException {
-//        writer = new CustomWriter(prefixFile);
-//        reader = new CustomLineReader(prefixFile);
-//    }
-
-    List<PrefixFileInterval> prefixIntervalList = new ArrayList<PrefixFileInterval>();
-    File prefixBaseFile;
-
-    //Create a seperate file for each 10000 characters
     public PrefixFileAccessor(File prefixFile) throws IOException {
         prefixBaseFile = prefixFile;
         prefixIntervalList.add(new PrefixFileInterval(prefixFile, prefixIntervalList.size()));
     }
 
-//    public void write(long value) throws IOException {
-//        writer.writeLine(value);
-//    }
-
-    private long ctr = 0;
-    private final long seperationValue = 10000;
-
     public void write(long value) throws IOException {
-        if ((int) (ctr / seperationValue) > prefixIntervalList.size())
+        if ((int) (ctr / separationValue) >= prefixIntervalList.size())
             prefixIntervalList.add(new PrefixFileInterval(prefixBaseFile, prefixIntervalList.size()));
-        prefixIntervalList.get((int) (ctr / seperationValue)).write(value);
+        if (ctr == separationValue - 1)
+            prefixIntervalList.get((int) (ctr / separationValue)).write(value);
+        else
+            prefixIntervalList.get((int) (ctr / separationValue)).writeLine(value);
         ctr++;
     }
 
-
-//    public long read(long index) throws IOException {
-//        return Long.valueOf(reader.read(index));
-//    }
-
     public long read(long index) throws IOException {
-        return Long.valueOf(prefixIntervalList.get((int) (index / seperationValue)).read(index));
+        return prefixIntervalList.get((int) (index / separationValue)).read(index-  index / separationValue * separationValue);
     }
-
-//    public void close() throws IOException {
-//        writer.close();
-//        reader.close();
-//    }
 
     public void close() throws IOException {
         for (PrefixFileInterval interval : prefixIntervalList) {
@@ -92,12 +77,9 @@ public class PrefixFileAccessor {
         }
     }
 
-
-    public void reset() throws IOException {
+    public void reset(boolean resetWriter) throws IOException {
         for (PrefixFileInterval interval : prefixIntervalList) {
-            interval.reset();
+            interval.reset(resetWriter);
         }
     }
-
-
 }

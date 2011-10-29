@@ -79,5 +79,8 @@ public class CustomReader {
         return System.getProperty("line.separator");
     }
 
+    public long getCurrentPosition() {
+        return readPointer;
+    }
 }
 
