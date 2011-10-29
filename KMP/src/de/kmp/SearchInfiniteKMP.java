@@ -19,7 +19,7 @@ public class SearchInfiniteKMP {
             try {
                 patternReader = new CustomReader(patternFile);
                 textReader = new CustomReader(textFile);
-                prefixWrapper = new PrefixFileAccessor(getPrefixFile(patternFile));
+                prefixWrapper = new PrefixFileAccessor();
 
                 long start = System.currentTimeMillis();
                 createPrefixFile(patternReader, prefixWrapper);
@@ -42,11 +42,6 @@ public class SearchInfiniteKMP {
             ex.printStackTrace();
             return -1;
         }
-    }
-
-    private static File getPrefixFile(File patternFile) {
-        return new File(patternFile.getPath().substring(0,
-                patternFile.getPath().lastIndexOf(File.separator) + 1) + "PrefixFile.txt");
     }
 
     public void createPrefixFile(CustomReader patternReader, PrefixFileAccessor prefixWrapper) throws IOException {

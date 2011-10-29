@@ -19,7 +19,7 @@ public class CustomWriterTest {
     public void testWrite() {
         try {
             File testFile = new File(TestData.getBasePath() + "TestFile.txt");
-            CustomWriter writer = new CustomWriter(testFile);
+            CustomWriter writer = new CustomWriter(testFile, true);
 
             String[] values = new String[]{"0", "1", "2", "3", "4"};
             for (String value : values) {
@@ -49,7 +49,7 @@ public class CustomWriterTest {
     public void testWriteLine() {
         try {
             File testFile = new File(TestData.getBasePath() + "TestFile.txt");
-            CustomWriter writer = new CustomWriter(testFile);
+            CustomWriter writer = new CustomWriter(testFile, true);
 
             String[] values = new String[]{"0", "1", "2", "3", "4"};
             for (String value : values) {
@@ -84,7 +84,7 @@ public class CustomWriterTest {
     public void testCombiStepByStep() {
         try {
             File testFile = new File(TestData.getBasePath() + "TestFile.txt");
-            CustomWriter writer = new CustomWriter(testFile);
+            CustomWriter writer = new CustomWriter(testFile, true);
             for (int i = -1; i < 10; i++) {
                 writer.writeLine(String.valueOf(i));
             }
@@ -124,7 +124,7 @@ public class CustomWriterTest {
     public void testCombiWriteReadLinePosForward() {
         try {
             File testFile = new File(TestData.getBasePath() + "TestFile.txt");
-            CustomWriter writer = new CustomWriter(testFile);
+            CustomWriter writer = new CustomWriter(testFile, true);
             for (int i = -1; i < 10; i++) {
                 writer.writeLine(String.valueOf(i));
             }
@@ -148,7 +148,7 @@ public class CustomWriterTest {
     public void testCombiWriteReadLineJump() {
         try {
             File testFile = new File(TestData.getBasePath() + "TestFile.txt");
-            CustomWriter writer = new CustomWriter(testFile);
+            CustomWriter writer = new CustomWriter(testFile, true);
             for (int i = -1; i < 10; i++) {
                 writer.writeLine(String.valueOf(i));
             }
