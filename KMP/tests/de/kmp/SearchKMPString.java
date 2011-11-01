@@ -12,11 +12,11 @@ import java.util.List;
  * Time: 12:07
  */
 @SuppressWarnings({"ResultOfMethodCallIgnored"})
-public class SearchKMPArray {
-    private List<ISearchArray> searcherList = null;
+public class SearchKMPString {
+    private List<ISearchString> searcherList = null;
 
-    public SearchKMPArray() {
-        searcherList = new ArrayList<ISearchArray>();
+    public SearchKMPString() {
+        searcherList = new ArrayList<ISearchString>();
         searcherList.add(new SearchNaive());
         searcherList.add(new SearchKMP());
     }
@@ -84,10 +84,10 @@ public class SearchKMPArray {
         Assert.assertTrue(search(searcherList, testData, 1, "Pattern and text empty."));
     }
     
-    public static boolean search(List<ISearchArray> searcherList, TestData testData, int loops, String testTitle) {
+    public static boolean search(List<ISearchString> searcherList, TestData testData, int loops, String testTitle) {
         System.out.println("Test " + testTitle + " (" + loops + " loop(s) each search type)");
         Boolean success = true;
-        for (ISearchArray searcher : searcherList) {
+        for (ISearchString searcher : searcherList) {
             long start = System.currentTimeMillis();
             for (int iii = 0; iii < loops; iii++) {
                 success = success ? search(searcher, testData) : success;
@@ -99,9 +99,9 @@ public class SearchKMPArray {
         return success;
     }
 
-    private static boolean search(ISearchArray searcher, TestData testData) {
+    private static boolean search(ISearchString searcher, TestData testData) {
         try {
-            int resultIndex = searcher.search(testData.getTextArray(), testData.getPatternArray());
+            int resultIndex = searcher.search(testData.getTextString(), testData.getPatternString());
             if (resultIndex != testData.getExpectedIndex()) {
                 System.out.println("Test failed for " + searcher.getClass().getName() + ". (should be " + testData.getExpectedIndex() + ", but was " + resultIndex + ")");
                 return false;

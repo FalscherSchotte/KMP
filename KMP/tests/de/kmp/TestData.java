@@ -17,12 +17,38 @@ public class TestData {
     private int expectedIndex;
     private static final String basePath = "E:\\HsKA\\Semester2\\Algorithmen Labor\\";
 
-    public String[] getText() {
+    public String[] getTextArray() {
         return text;
     }
 
-    public String[] getPattern() {
+    public String[] getPatternArray() {
         return pattern;
+    }
+
+    public String getTextString() {
+        if (text == null)
+            return null;
+        if (text.length == 0)
+            return "";
+
+        StringBuilder builder = new StringBuilder();
+        for (String s : text) {
+            builder.append(s);
+        }
+        return builder.toString();
+    }
+
+    public String getPatternString() {
+        if (pattern == null)
+            return null;
+        if (pattern.length == 0)
+            return "";
+
+        StringBuilder builder = new StringBuilder();
+        for (String s : pattern) {
+            builder.append(s);
+        }
+        return builder.toString();
     }
 
     public int getExpectedIndex() {
@@ -172,7 +198,7 @@ public class TestData {
 
                 String element;
                 while ((element = getNextString()) != null) {
-                    if(!element.equals("\u0000"))
+                    if (!element.equals("\u0000"))
                         bufferedWriter.write(element);
                 }
                 //flush?
@@ -206,7 +232,7 @@ public class TestData {
         public String getNextString() {
             if (patternPosition < patternLength - 1) {
                 patternPosition++;
-                return random.nextBoolean() == true ? "0" : "1";
+                return random.nextBoolean() ? "0" : "1";
             } else if (patternPosition == patternLength - 1) {
                 patternPosition++;
                 return "@";

@@ -9,7 +9,26 @@ import java.io.IOException;
  * Time: 19:30
  * Knuth-Morris-Pratt- / KMP-Search-Algorithm
  */
-public class SearchKMP implements ISearchArray, ISearchFile {
+public class SearchKMP implements ISearchString, ISearchArray, ISearchFile {
+
+    public int search(String text, String pattern) {
+        if (text == null || text.length() <= 0)
+            return -1;
+        if (pattern == null || pattern.length() <= 0)
+            return -1;
+
+        String[] textArray = new String[text.length()];
+        for (int i = 0; i < text.length(); i++) {
+            textArray[i] = text.substring(i, i + 1);
+        }
+
+        String[] patternArray = new String[pattern.length()];
+        for (int i = 0; i < pattern.length(); i++) {
+            patternArray[i] = pattern.substring(i, i + 1);
+        }
+
+        return search(textArray, patternArray);
+    }
 
     public int search(String[] text, String[] pattern) {
         if (text == null || pattern == null || text.length == 0 || pattern.length == 0 || pattern.length > text.length)
