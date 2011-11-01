@@ -30,26 +30,6 @@ public class CustomReaderTest {
     }
 
     @Test
-    public void testReadNext() throws IOException {
-        CustomReader reader = null;
-        try {
-            reader = new CustomReader(testFile);
-            int ctr = 0;
-            while (reader.getPosition() != reader.getSize()) {
-                Assert.assertEquals(String.valueOf(ctr), reader.readNext());
-                ctr++;
-            }
-            Assert.assertEquals(10, ctr);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            Assert.assertNotNull("CustomReader exception occured!", null);
-        } finally {
-            assert reader != null;
-            reader.close();
-        }
-    }
-
-    @Test
     public void testReadJumpForward() throws IOException {
         CustomReader reader = null;
         try {
@@ -85,34 +65,6 @@ public class CustomReaderTest {
             Assert.assertEquals("4", reader.read(4));
             Assert.assertEquals(false, reader.getSize() == reader.getPosition());
             Assert.assertEquals("4", reader.read(4));
-            Assert.assertEquals(false, reader.getSize() == reader.getPosition());
-            Assert.assertEquals("9", reader.read(9));
-            Assert.assertEquals(true, reader.getSize() == reader.getPosition());
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            Assert.assertNotNull("CustomReader exception occured!", null);
-        } finally {
-            assert reader != null;
-            reader.close();
-        }
-    }
-
-    @Test
-    public void testReadMixed() throws IOException {
-        CustomReader reader = null;
-        try {
-            reader = new CustomReader(testFile);
-            Assert.assertEquals("4", reader.read(4));
-            Assert.assertEquals(false, reader.getSize() == reader.getPosition());
-            Assert.assertEquals("5", reader.readNext());
-            Assert.assertEquals(false, reader.getSize() == reader.getPosition());
-            Assert.assertEquals("1", reader.read(1));
-            Assert.assertEquals(false, reader.getSize() == reader.getPosition());
-            Assert.assertEquals("4", reader.read(4));
-            Assert.assertEquals(false, reader.getSize() == reader.getPosition());
-            Assert.assertEquals("4", reader.read(4));
-            Assert.assertEquals(false, reader.getSize() == reader.getPosition());
-            Assert.assertEquals("5", reader.readNext());
             Assert.assertEquals(false, reader.getSize() == reader.getPosition());
             Assert.assertEquals("9", reader.read(9));
             Assert.assertEquals(true, reader.getSize() == reader.getPosition());

@@ -37,12 +37,10 @@ public class CustomReader {
             bufferedReader.close();
     }
 
-    public String readNext() throws IOException {
+    private String readNext() throws IOException {
         char[] buffer = new char[1];
         bufferedReader.read(buffer);
-
         stackBuffer.add(readPointer, String.valueOf(buffer));
-
         readPointer++;
         return String.valueOf(buffer);
     }

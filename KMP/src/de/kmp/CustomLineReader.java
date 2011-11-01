@@ -38,7 +38,7 @@ public class CustomLineReader {
             bufferedReader.close();
     }
 
-    public String readNext() throws IOException {
+    private String readNext() throws IOException {
         String line = bufferedReader.readLine();
         stackBuffer.add(linePointer, line);
         linePointer++;

@@ -9,10 +9,10 @@ import java.util.List;
  */
 public abstract class TestHelper {
 
-    public static boolean search(List<ISearch> searcherList, TestData testData, int loops, String testTitle) {
+    public static boolean search(List<ISearchArray> searcherList, TestData testData, int loops, String testTitle) {
         System.out.println("Test " + testTitle + " (" + loops + " loop(s) each search type)");
         Boolean success = true;
-        for (ISearch searcher : searcherList) {
+        for (ISearchArray searcher : searcherList) {
             long start = System.currentTimeMillis();
             for (int iii = 0; iii < loops; iii++) {
                 success = success ? search(searcher, testData) : success;
@@ -24,7 +24,7 @@ public abstract class TestHelper {
         return success;
     }
 
-    private static boolean search(ISearch searcher, TestData testData) {
+    private static boolean search(ISearchArray searcher, TestData testData) {
         try {
             int resultIndex = searcher.search(testData.getText(), testData.getPattern());
             if (resultIndex != testData.getExpectedIndex()) {

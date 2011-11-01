@@ -3,9 +3,6 @@ package de.kmp;
 import junit.framework.Assert;
 import org.junit.Test;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,22 +12,14 @@ import java.util.List;
  * Time: 12:07
  */
 @SuppressWarnings({"ResultOfMethodCallIgnored"})
-public class SearchTest {
-    private List<ISearch> searcherList = null;
+public class SearchKMPArray {
+    private List<ISearchArray> searcherList = null;
 
-    public SearchTest() {
-        searcherList = new ArrayList<ISearch>();
+    public SearchKMPArray() {
+        searcherList = new ArrayList<ISearchArray>();
         searcherList.add(new SearchNaive());
         searcherList.add(new SearchKMP());
     }
-//
-//    @Test
-//    public void testSearchNormal() {
-//        File file = new File(TestData.getBasePath() + "TestData001.txt");
-//        //TestData.generateTestDataFile(file, 1000, 100000, 99000);
-//        TestData testData = TestData.read(file);
-//        Assert.assertTrue(TestHelper.search(searcherList, testData, 1000, "TestData0001.txt"));
-//    }
 
     @Test
     public void testSearchPatternAtTheBeginning() {
@@ -94,5 +83,4 @@ public class SearchTest {
         TestData testData = new TestData(new String[]{}, new String[]{}, -1);
         Assert.assertTrue(TestHelper.search(searcherList, testData, 1, "Pattern and text empty."));
     }
-
 }

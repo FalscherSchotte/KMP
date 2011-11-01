@@ -5,6 +5,6 @@ package de.kmp;
  * Date: 06.10.11
  * Time: 14:40
  */
-public interface ISearch {
+public interface ISearchArray {
     int search(String[] text, String[] pattern);
 }

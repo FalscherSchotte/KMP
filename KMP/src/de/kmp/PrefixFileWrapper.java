@@ -14,7 +14,7 @@ public class PrefixFileWrapper {
     private List<PrefixFileInterval> prefixIntervalList = new ArrayList<PrefixFileInterval>();
     private File prefixBaseFile;
     private long ctr = 0;
-    private final int separationValue = 1000;
+    private final int separationValue = 10000;
 
     public PrefixFileWrapper() throws IOException {
         prefixBaseFile = new File(System.getProperty("java.io.tmpdir") + "kmp.prefix");
