@@ -80,45 +80,45 @@ public class CustomWriterTest {
         }
     }
 
-    @Test
-    public void testCombiStepByStep() {
-        try {
-            File testFile = new File(TestData.getBasePath() + "TestFile.txt");
-            CustomWriter writer = new CustomWriter(testFile, true);
-            for (int i = -1; i < 10; i++) {
-                writer.writeLine(String.valueOf(i));
-            }
-            writer.close();
-
-            FileReader fileReader = new FileReader(testFile);
-            BufferedReader bufferedReader = new BufferedReader(fileReader);
-            List<String> controlValues = new ArrayList<String>();
-            String line;
-            while ((line = bufferedReader.readLine()) != null) {
-                controlValues.add(line);
-            }
-
-            Assert.assertEquals("Written values don't have the expected size", 11, controlValues.size());
-            for (int i = 0; i < controlValues.size(); i++) {
-                Assert.assertEquals(controlValues.get(i), String.valueOf(i - 1));
-            }
-
-            CustomLineReader customLineReader = new CustomLineReader(testFile);
-            List<String> customValues = new ArrayList<String>();
-            while (customLineReader.hasNext()) {
-                customValues.add(customLineReader.readNext());
-            }
-
-            Assert.assertEquals("Read values of customLineReader.Next does not have the expected size", 11, controlValues.size());
-            for (int i = 0; i < controlValues.size(); i++) {
-                Assert.assertEquals(controlValues.get(i), customValues.get(i));
-            }
-
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            Assert.assertNotNull("Exception occured!", null);
-        }
-    }
+//    @Test
+//    public void testCombiStepByStep() {
+//        try {
+//            File testFile = new File(TestData.getBasePath() + "TestFile.txt");
+//            CustomWriter writer = new CustomWriter(testFile, true);
+//            for (int i = -1; i < 10; i++) {
+//                writer.writeLine(String.valueOf(i));
+//            }
+//            writer.close();
+//
+//            FileReader fileReader = new FileReader(testFile);
+//            BufferedReader bufferedReader = new BufferedReader(fileReader);
+//            List<String> controlValues = new ArrayList<String>();
+//            String line;
+//            while ((line = bufferedReader.readLine()) != null) {
+//                controlValues.add(line);
+//            }
+//
+//            Assert.assertEquals("Written values don't have the expected size", 11, controlValues.size());
+//            for (int i = 0; i < controlValues.size(); i++) {
+//                Assert.assertEquals(controlValues.get(i), String.valueOf(i - 1));
+//            }
+//
+//            CustomLineReader customLineReader = new CustomLineReader(testFile);
+//            List<String> customValues = new ArrayList<String>();
+//            while (customLineReader.hasNext()) {
+//                customValues.add(customLineReader.readNext());
+//            }
+//
+//            Assert.assertEquals("Read values of customLineReader.Next does not have the expected size", 11, controlValues.size());
+//            for (int i = 0; i < controlValues.size(); i++) {
+//                Assert.assertEquals(controlValues.get(i), customValues.get(i));
+//            }
+//
+//        } catch (Exception ex) {
+//            ex.printStackTrace();
+//            Assert.assertNotNull("Exception occured!", null);
+//        }
+//    }
 
     @Test
     public void testCombiWriteReadLinePosForward() {

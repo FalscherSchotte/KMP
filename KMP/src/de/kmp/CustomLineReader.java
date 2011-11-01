@@ -1,6 +1,8 @@
 package de.kmp;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
 
 /**
@@ -8,43 +10,70 @@ import java.io.IOException;
  * Date: 26.10.11
  * Time: 18:54
  */
-public class CustomLineReader extends CustomReader {
+public class CustomLineReader {
+    private File file;
+    private BufferedReader bufferedReader;
+    private long size;
+    private long readPointer;
+    private long linePointer;
+    private static String lineSeparator;
+    private StackBuffer stackBuffer = new StackBuffer();
 
     public CustomLineReader(File file) throws IOException {
-        super(file);
+        this.file = file;
+        size = file.length();
+        lineSeparator = System.getProperty("line.separator");
+        reset();
+    }
+
+    public void reset() throws IOException {
+        close();
+        readPointer = 0;
+        linePointer = 0;
+        bufferedReader = new BufferedReader(new FileReader(file));
+    }
+
+    public void close() throws IOException {
+        if (bufferedReader != null)
+            bufferedReader.close();
     }
 
     public String readNext() throws IOException {
-        //Read lines instead of chars!
-
-        String stack = "";
-        while (!stack.contains(CustomReader.getLineSeparator()) && hasNext()) {
-            char[] buffer = new char[1];
-            reader.read(buffer);
-            stack += String.valueOf(buffer);
-
-            char[] lookAheadBuffer = new char[1];
-            int nextResult = lookAheadReader.read(lookAheadBuffer);
-            if (nextResult == -1 || String.valueOf(lookAheadBuffer).equals("\u0000"))
-                hasNext = false;
-        }
-
-        readPointer++;
-        return stack.trim();
+        String line = bufferedReader.readLine();
+        stackBuffer.add(linePointer, line);
+        linePointer++;
+        readPointer += line.length() + lineSeparator.length();
+        return line;
     }
 
-    public String read(long index) throws IOException {
-        if (index < 0)
-            return null;
-        if (index < readPointer)
+    public String read(long lineIndex) throws IOException {
+        if(stackBuffer.get(lineIndex) != null)
+            return stackBuffer.get(lineIndex);
+        if (lineIndex < linePointer) {
             reset();
-        if (index > readPointer) {
-            //skip lines, not chars
-            long linesToSkip = index - readPointer;
-            for(long i=0; i<linesToSkip; i++){
+        }
+        if (lineIndex > linePointer) {
+            long linesToSkip = lineIndex - linePointer;
+            for (long i = 0; i < linesToSkip; i++) {
                 readNext();
             }
         }
         return readNext();
+    }
+
+    public long getSize() {
+        return size;
+    }
+
+    public long getPosition() {
+        return readPointer;
+    }
+
+    public long getLineNumber() {
+        return linePointer;
+    }
+
+    public static String getLineSeparator() {
+        return lineSeparator;
     }
 }

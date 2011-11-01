@@ -7,8 +7,6 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * User: FloLap
@@ -16,16 +14,16 @@ import java.util.List;
  * Time: 18:57
  */
 public class CustomLineReaderTest {
-    private File testFile;
+    private static File testFile = new File(TestData.getBasePath() + "TestFile.txt");
 
     public CustomLineReaderTest() throws IOException {
-        testFile = new File(TestData.getBasePath() + "TestFile.txt");
-        createTestFile(testFile); //-10123456789
+        createTestFile();
     }
 
-    public static void createTestFile(File testFile) throws IOException {
+    public static void createTestFile() throws IOException {
         FileWriter writer = new FileWriter(testFile);
         BufferedWriter bufferedWriter = new BufferedWriter(writer);
+        //-10123456789
         for (int i = -1; i < 10; i++) {
             bufferedWriter.write(String.valueOf(i));
             bufferedWriter.newLine();
@@ -35,39 +33,105 @@ public class CustomLineReaderTest {
     }
 
     @Test
-    public void testReadNext() throws IOException {
+    public void testReadJumpForward() throws IOException {
+        CustomLineReader reader = null;
         try {
-            CustomLineReader reader = new CustomLineReader(testFile);
-            List<String> readData = new ArrayList<String>();
-            while(reader.hasNext()){
-                readData.add(reader.readNext());
-            }
-
-            Assert.assertEquals("Length missmatch", 11, readData.size());
-            for(int i = -1; i < 10; i++){
-                Assert.assertEquals("Missmatch at " + i, readData.get(i + 1), String.valueOf(i));
-            }
+            reader = new CustomLineReader(testFile);
+            Assert.assertEquals(false, reader.getPosition() == reader.getSize());
+            Assert.assertEquals("-1", reader.read(0));
+            Assert.assertEquals(false, reader.getPosition() == reader.getSize());
+            Assert.assertEquals("1", reader.read(2));
+            Assert.assertEquals(false, reader.getPosition() == reader.getSize());
+            Assert.assertEquals("3", reader.read(4));
+            Assert.assertEquals(false, reader.getPosition() == reader.getSize());
+            Assert.assertEquals("4", reader.read(5));
+            Assert.assertEquals(false, reader.getPosition() == reader.getSize());
+            Assert.assertEquals("8", reader.read(9));
+            Assert.assertEquals(false, reader.getPosition() == reader.getSize());
+            Assert.assertEquals("9", reader.read(10));
+            Assert.assertEquals(true, reader.getPosition() == reader.getSize());
         } catch (Exception ex) {
             ex.printStackTrace();
             Assert.assertNotNull("CustomReader exception occured!", null);
+        } finally {
+            assert reader != null;
+            reader.close();
         }
     }
 
     @Test
-    public void testReadJumpForward() throws IOException {
+    public void testReadJumpAround() throws IOException {
+        CustomLineReader reader = null;
         try {
-            CustomLineReader reader = new CustomLineReader(testFile);
-            String line = "";
-            //-10123456789
-            line += reader.read(0);
-            line += reader.read(2);
-            line += reader.read(4);
-            line += reader.read(5);
-            line += reader.read(9);
-            Assert.assertEquals("-11348", line);
+            reader = new CustomLineReader(testFile);
+            Assert.assertEquals(false, reader.getPosition() == reader.getSize());
+            Assert.assertEquals("0", reader.read(1));
+            Assert.assertEquals(false, reader.getPosition() == reader.getSize());
+            Assert.assertEquals("4", reader.read(5));
+            Assert.assertEquals(false, reader.getPosition() == reader.getSize());
+            Assert.assertEquals("-1", reader.read(0));
+            Assert.assertEquals(false, reader.getPosition() == reader.getSize());
+            Assert.assertEquals("0", reader.read(1));
+            Assert.assertEquals(false, reader.getPosition() == reader.getSize());
+            Assert.assertEquals("0", reader.read(1));
+            Assert.assertEquals(false, reader.getPosition() == reader.getSize());
+            Assert.assertEquals("8", reader.read(9));
+            Assert.assertEquals(false, reader.getPosition() == reader.getSize());
+            Assert.assertEquals("9", reader.read(10));
+            Assert.assertEquals(true, reader.getPosition() == reader.getSize());
         } catch (Exception ex) {
             ex.printStackTrace();
             Assert.assertNotNull("CustomReader exception occured!", null);
+        } finally {
+            assert reader != null;
+            reader.close();
+        }
+    }
+
+    @Test
+    public void testReadMixed() throws IOException {
+        CustomLineReader reader = null;
+        try {
+            reader = new CustomLineReader(testFile);
+            Assert.assertEquals(false, reader.getPosition() == reader.getSize());
+            Assert.assertEquals("-1", reader.readNext());
+            Assert.assertEquals(false, reader.getPosition() == reader.getSize());
+            Assert.assertEquals("4", reader.read(5));
+            Assert.assertEquals(false, reader.getPosition() == reader.getSize());
+            Assert.assertEquals("5", reader.readNext());
+            Assert.assertEquals(false, reader.getPosition() == reader.getSize());
+            Assert.assertEquals("6", reader.readNext());
+            Assert.assertEquals(false, reader.getPosition() == reader.getSize());
+            Assert.assertEquals("8", reader.read(9));
+            Assert.assertEquals(false, reader.getPosition() == reader.getSize());
+            Assert.assertEquals("9", reader.readNext());
+            Assert.assertEquals(true, reader.getPosition() == reader.getSize());
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            Assert.assertNotNull("CustomReader exception occured!", null);
+        } finally {
+            assert reader != null;
+            reader.close();
+        }
+    }
+
+    @Test
+    public void testReadNextUntilDone() throws IOException {
+        CustomLineReader reader = null;
+        try {
+            reader = new CustomLineReader(testFile);
+            int ctr = -1;
+            while (reader.getPosition() != reader.getSize()) {
+                Assert.assertEquals(String.valueOf(ctr), reader.readNext());
+                ctr++;
+            }
+            Assert.assertEquals(10, ctr);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            Assert.assertNotNull("CustomReader exception occured!", null);
+        } finally {
+            assert reader != null;
+            reader.close();
         }
     }
 }

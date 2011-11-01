@@ -12,75 +12,66 @@ import java.io.IOException;
  */
 
 public class CustomReader {
-    protected File file;
-    protected FileReader reader;
-    protected FileReader lookAheadReader;
-    protected BufferedReader bufferedReader;
-    protected long readPointer;
-    protected boolean hasNext;
+    private File file;
+    private BufferedReader bufferedReader;
+    private long size;
+    private long readPointer;
+    private static String lineSeparator;
+    private StackBuffer stackBuffer = new StackBuffer();
 
     public CustomReader(File file) throws IOException {
         this.file = file;
-        hasNext = true;
-        readPointer = 0;
-        reader = new FileReader(file);
-        lookAheadReader = new FileReader(file);
-        bufferedReader = new BufferedReader(reader);
-        lookAheadReader.read();
+        size = file.length();
+        lineSeparator = System.getProperty("line.separator");
+        reset();
     }
 
     public void reset() throws IOException {
         close();
-        reader = new FileReader(file);
-        lookAheadReader = new FileReader(file);
-        bufferedReader = new BufferedReader(reader);
         readPointer = 0;
-        hasNext = true;
-        lookAheadReader.read();
+        bufferedReader = new BufferedReader(new FileReader(file));
     }
 
     public void close() throws IOException {
-        reader.close();
-        bufferedReader.close();
-        lookAheadReader.close();
+        if (bufferedReader != null)
+            bufferedReader.close();
     }
 
     public String readNext() throws IOException {
         char[] buffer = new char[1];
-        reader.read(buffer);
+        bufferedReader.read(buffer);
 
-        char[] lookAheadBuffer = new char[1];
-        int nextResult = lookAheadReader.read(lookAheadBuffer);
-        if (nextResult == -1 || String.valueOf(lookAheadBuffer).equals("\u0000"))
-            hasNext = false;
+        stackBuffer.add(readPointer, String.valueOf(buffer));
 
         readPointer++;
         return String.valueOf(buffer);
     }
 
     public String read(long index) throws IOException {
-        if (index < 0)
-            return null;
-        if (index < readPointer)
+        if(stackBuffer.get(index) != null)
+            return stackBuffer.get(index);
+        if (index < readPointer) {
             reset();
+        }
         if (index > readPointer) {
-            reader.skip(index - readPointer);
-            lookAheadReader.skip(index - readPointer);
-            readPointer += index - readPointer;
+            long charsToSkip = index - readPointer;
+            for (long i = 0; i < charsToSkip; i++) {
+                readNext();
+            }
         }
         return readNext();
     }
 
-    public boolean hasNext() {
-        return hasNext;
+    public long getSize() {
+        return size;
+    }
+
+    public long getPosition() {
+        return readPointer;
     }
 
     public static String getLineSeparator() {
-        return System.getProperty("line.separator");
-    }
-
-    public long getCurrentPosition() {
-        return readPointer;
+        return lineSeparator;
     }
 }
 

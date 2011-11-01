@@ -11,31 +11,31 @@ import java.io.IOException;
 public class SearchInfiniteKMP {
 
     public long search(File textFile, File patternFile) {
-        CustomReader patternReader = null;
+        CustomReader patternReader1 = null;
+        CustomReader patternReader2 = null;
         CustomReader textReader = null;
-        PrefixFileAccessor prefixWrapper = null;
+        PrefixFileWrapper prefixWrapper = null;
 
         try {
             try {
-                patternReader = new CustomReader(patternFile);
+                patternReader1 = new CustomReader(patternFile);
+                patternReader2 = new CustomReader(patternFile);
                 textReader = new CustomReader(textFile);
-                prefixWrapper = new PrefixFileAccessor();
+                prefixWrapper = new PrefixFileWrapper();
 
                 long start = System.currentTimeMillis();
-                createPrefixFile(patternReader, prefixWrapper);
+                createPrefixFile(patternReader1, patternReader2, prefixWrapper);
                 long end = System.currentTimeMillis();
                 System.out.println("Create prefix files took " + (end - start) + "ms.");
 
-                patternReader.reset();
+                patternReader1.reset();
                 prefixWrapper.reset(false);
 
-                return kmpSearch(textReader, patternReader, prefixWrapper);
+                return kmpSearch(textReader, patternReader1, prefixWrapper);
             } finally {
-                assert patternReader != null;
-                patternReader.close();
-                assert textReader != null;
+                patternReader1.close();
+                patternReader2.close();
                 textReader.close();
-                assert prefixWrapper != null;
                 prefixWrapper.close();
             }
         } catch (Exception ex) {
@@ -44,13 +44,13 @@ public class SearchInfiniteKMP {
         }
     }
 
-    public void createPrefixFile(CustomReader patternReader, PrefixFileAccessor prefixWrapper) throws IOException {
+    public void createPrefixFile(CustomReader patternReader1, CustomReader patternReader2, PrefixFileWrapper prefixWrapper) throws IOException {
         long patternPos = 0;
         long prefixLength = -1;
 
         prefixWrapper.write(prefixLength);
-        while (patternReader.hasNext()) {
-            while (prefixLength >= 0 && !patternReader.read(prefixLength).equals(patternReader.read(patternPos))) {
+        while (patternPos < patternReader1.getSize()) {
+            while (prefixLength >= 0 && !patternReader1.read(prefixLength).equals(patternReader2.read(patternPos))) {
                 prefixLength = prefixWrapper.read(prefixLength);
             }
             patternPos++;
@@ -59,17 +59,17 @@ public class SearchInfiniteKMP {
         }
     }
 
-    public long kmpSearch(CustomReader textReader, CustomReader patternReader, PrefixFileAccessor prefixWrapper) throws IOException {
+    public long kmpSearch(CustomReader textReader, CustomReader patternReader, PrefixFileWrapper prefixWrapper) throws IOException {
         long textPosition = 0;
         long patternPosition = 0;
-        while (textReader.hasNext()) {
+        while (textPosition < textReader.getSize()) {
             while (patternPosition >= 0 && !textReader.read(textPosition).equals(patternReader.read(patternPosition))) {
                 patternPosition = prefixWrapper.read(patternPosition);
             }
             textPosition++;
             patternPosition++;
-            if (!patternReader.hasNext())
-                return textPosition - patternReader.getCurrentPosition();
+            if (patternPosition == patternReader.getSize())
+                return textPosition - patternReader.getSize();
         }
         return -1; //No match found
     }
