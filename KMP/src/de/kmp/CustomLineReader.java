@@ -68,12 +68,4 @@ public class CustomLineReader {
     public long getPosition() {
         return readPointer;
     }
-
-    public long getLineNumber() {
-        return linePointer;
-    }
-
-    public static String getLineSeparator() {
-        return lineSeparator;
-    }
 }

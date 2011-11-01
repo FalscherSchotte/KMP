@@ -16,13 +16,11 @@ public class CustomReader {
     private BufferedReader bufferedReader;
     private long size;
     private long readPointer;
-    private static String lineSeparator;
     private StackBuffer stackBuffer = new StackBuffer();
 
     public CustomReader(File file) throws IOException {
         this.file = file;
         size = file.length();
-        lineSeparator = System.getProperty("line.separator");
         reset();
     }
 
@@ -46,7 +44,7 @@ public class CustomReader {
     }
 
     public String read(long index) throws IOException {
-        if(stackBuffer.get(index) != null)
+        if (stackBuffer.get(index) != null)
             return stackBuffer.get(index);
         if (index < readPointer) {
             reset();
@@ -66,10 +64,6 @@ public class CustomReader {
 
     public long getPosition() {
         return readPointer;
-    }
-
-    public static String getLineSeparator() {
-        return lineSeparator;
     }
 }
 

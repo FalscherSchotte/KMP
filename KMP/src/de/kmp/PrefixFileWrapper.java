@@ -38,9 +38,9 @@ public class PrefixFileWrapper {
         }
     }
 
-    public void reset(boolean resetWriter) throws IOException {
+    public void reset() throws IOException {
         for (PrefixFileInterval interval : prefixIntervalList) {
-            interval.reset(resetWriter);
+            interval.reset();
         }
     }
 
@@ -68,9 +68,7 @@ public class PrefixFileWrapper {
             reader.close();
         }
 
-        public void reset(boolean resetWriter) throws IOException {
-            if (resetWriter)
-                writer.reset();
+        public void reset() throws IOException {
             reader.reset();
         }
     }

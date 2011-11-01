@@ -76,7 +76,7 @@ public class SearchKMP implements ISearchArray, ISearchFile {
                 createPrefixFile(patternReader1, patternReader2, prefixWrapper);
 
                 patternReader1.reset();
-                prefixWrapper.reset(false);
+                prefixWrapper.reset();
 
                 return kmpSearch(textReader, patternReader1, prefixWrapper);
             } finally {
