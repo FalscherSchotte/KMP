@@ -23,17 +23,17 @@ public class SearchKMPString {
 
     @Test
     public void testSearchPatternAtTheBeginning() {
-        Assert.assertTrue(search(searcherList, TestData.generateTestData(1000, 100000, 0), 1000, "Pattern at the beginning."));
+        Assert.assertTrue(search(searcherList, TestData.generateTestData(1000, 100000, 0), 1, "Pattern at the beginning."));
     }
 
     @Test
     public void testSearchPatternInTheMiddle() {
-        Assert.assertTrue(search(searcherList, TestData.generateTestData(1000, 100000, 50000), 1000, "Pattern in the middle."));
+        Assert.assertTrue(search(searcherList, TestData.generateTestData(1000, 100000, 50000), 1, "Pattern in the middle."));
     }
 
     @Test
     public void testSearchPatternAtTheEnd() {
-        Assert.assertTrue(search(searcherList, TestData.generateTestData(1000, 100000, 99000), 1000, "Pattern at the end."));
+        Assert.assertTrue(search(searcherList, TestData.generateTestData(1000, 100000, 99000), 1, "Pattern at the end."));
     }
 
     @Test
