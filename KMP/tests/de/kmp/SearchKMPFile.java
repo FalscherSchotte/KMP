@@ -163,6 +163,14 @@ public class SearchKMPFile {
                 + (4) + " took " + (end - start) + "ms");
     }
 
+    @Test
+    public void testFileNotExists() {
+        File patternFile = new File(TestData.getBasePath() + "FOO.txt");
+        File textFile = new File(TestData.getBasePath() + "FOO2.txt");
+        ISearchFile searcher = new SearchKMP();
+        Assert.assertEquals("Position of pattern", -1, searcher.search(textFile, patternFile));
+    }
+
     private void performTest(ISearchFile[] searchers, long patternLength, long patternPos) {
         File patternFile = new File(TestData.getBasePath() + "PatternTestFile.txt");
         File textFile = new File(TestData.getBasePath() + "TextTestFile.txt");
