@@ -72,7 +72,6 @@ public class SearchKMP implements ISearchString, ISearchArray, ISearchFile {
             //move to next position
             textPosition++;
             patternPosition++;
-
             if (patternPosition == pattern.length)
                 return textPosition - pattern.length; //match
         }

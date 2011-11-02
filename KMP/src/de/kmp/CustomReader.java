@@ -16,7 +16,7 @@ public class CustomReader {
     private BufferedReader bufferedReader;
     private long size;
     private long readPointer;
-    private StackBuffer stackBuffer = new StackBuffer();
+    private RingBuffer ringBuffer = new RingBuffer();
 
     public CustomReader(File file) throws IOException {
         this.file = file;
@@ -38,14 +38,14 @@ public class CustomReader {
     private String readNext() throws IOException {
         char[] buffer = new char[1];
         bufferedReader.read(buffer);
-        stackBuffer.add(readPointer, String.valueOf(buffer));
+        ringBuffer.add(readPointer, String.valueOf(buffer));
         readPointer++;
         return String.valueOf(buffer);
     }
 
     public String read(long index) throws IOException {
-        if (stackBuffer.get(index) != null)
-            return stackBuffer.get(index);
+        if (ringBuffer.get(index) != null)
+            return ringBuffer.get(index);
         if (index < readPointer) {
             reset();
         }

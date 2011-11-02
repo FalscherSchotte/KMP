@@ -22,6 +22,13 @@ public class SearchKMPArray {
     }
 
     @Test
+    public void testSearchSpecificCase() {
+        String[] pattern = new String[]{"0", "1", "0", "1", "0", "1"};
+        String[] text = new String[]{"0", "1", "0", "1", "0", "0", "0", "1", "0", "1", "0", "1"};
+        Assert.assertEquals(6, searcherList.get(1).search(text, pattern));
+    }
+
+    @Test
     public void testSearchPatternAtTheBeginning() {
         Assert.assertTrue(search(searcherList, TestData.generateTestData(1000, 100000, 0), 1000, "Pattern at the beginning."));
     }
@@ -83,7 +90,7 @@ public class SearchKMPArray {
         TestData testData = new TestData(new String[]{}, new String[]{}, -1);
         Assert.assertTrue(search(searcherList, testData, 1, "Pattern and text empty."));
     }
-    
+
     public static boolean search(List<ISearchArray> searcherList, TestData testData, int loops, String testTitle) {
         System.out.println("Test " + testTitle + " (" + loops + " loop(s) each search type)");
         Boolean success = true;

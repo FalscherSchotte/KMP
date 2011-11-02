@@ -17,7 +17,7 @@ public class CustomLineReader {
     private long readPointer;
     private long linePointer;
     private static String lineSeparator;
-    private StackBuffer stackBuffer = new StackBuffer();
+    private RingBuffer ringBuffer = new RingBuffer();
 
     public CustomLineReader(File file) throws IOException {
         this.file = file;
@@ -40,15 +40,15 @@ public class CustomLineReader {
 
     private String readNext() throws IOException {
         String line = bufferedReader.readLine();
-        stackBuffer.add(linePointer, line);
+        ringBuffer.add(linePointer, line);
         linePointer++;
         readPointer += line.length() + lineSeparator.length();
         return line;
     }
 
     public String read(long lineIndex) throws IOException {
-        if(stackBuffer.get(lineIndex) != null)
-            return stackBuffer.get(lineIndex);
+        if(ringBuffer.get(lineIndex) != null)
+            return ringBuffer.get(lineIndex);
         if (lineIndex < linePointer) {
             reset();
         }

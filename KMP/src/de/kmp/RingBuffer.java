@@ -5,13 +5,13 @@ package de.kmp;
  * Date: 01.11.11
  * Time: 11:53
  */
-public class StackBuffer {
+public class RingBuffer {
     private int size = 20;
     private long[] indices = new long[size];
     private String[] values = new String[size];
     private int start = 0;
 
-    public StackBuffer() {
+    public RingBuffer() {
     }
 
     public void add(long index, String value) {
