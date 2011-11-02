@@ -4,6 +4,7 @@ import junit.framework.Assert;
 import org.junit.Test;
 
 import java.io.File;
+import java.io.FileWriter;
 
 /**
  * User: FloLap
@@ -60,6 +61,106 @@ public class SearchKMPFile {
         File pattern = new File("E:\\HsKA\\Semester2\\Algorithmen Labor\\KMP\\tests\\de\\kmp\\TestFilePattern.txt");
         File text = new File("E:\\HsKA\\Semester2\\Algorithmen Labor\\KMP\\tests\\de\\kmp\\TestFileText.txt");
         performSpecificTest(new ISearchFile[]{kmp}, pattern, text, 10000000);
+    }
+
+    @Test
+    public void testPatternEmpty() throws Exception {
+        File patternFile = new File(TestData.getBasePath() + "PatternTestFile.txt");
+        File textFile = new File(TestData.getBasePath() + "TextTestFile.txt");
+        TestData.generateTestDataFiles(patternFile, 10, textFile, 1000);
+        FileWriter writer = new FileWriter(patternFile);
+        writer.write("");
+        writer.close();
+
+        ISearchFile searcher = new SearchKMP();
+        long start = System.currentTimeMillis();
+        Assert.assertEquals("Position of pattern", -1, searcher.search(textFile, patternFile));
+        long end = System.currentTimeMillis();
+        System.out.println(searcher.getClass().getName() + ": Search of pattern (" + 0 + " chars) in text of size "
+                + (1000) + " took " + (end - start) + "ms");
+
+        searcher = new SearchNaive();
+        start = System.currentTimeMillis();
+        Assert.assertEquals("Position of pattern", -1, searcher.search(textFile, patternFile));
+        end = System.currentTimeMillis();
+        System.out.println(searcher.getClass().getName() + ": Search of pattern (" + 0 + " chars) in text of size "
+                + (1000) + " took " + (end - start) + "ms");
+    }
+
+    @Test
+    public void testTextEmpty() throws Exception {
+        File patternFile = new File(TestData.getBasePath() + "PatternTestFile.txt");
+        File textFile = new File(TestData.getBasePath() + "TextTestFile.txt");
+        TestData.generateTestDataFiles(patternFile, 10, textFile, 10);
+        FileWriter writer = new FileWriter(textFile);
+        writer.write("");
+        writer.close();
+
+        ISearchFile searcher = new SearchKMP();
+        long start = System.currentTimeMillis();
+        Assert.assertEquals("Position of pattern", -1, searcher.search(textFile, patternFile));
+        long end = System.currentTimeMillis();
+        System.out.println(searcher.getClass().getName() + ": Search of pattern (" + 10 + " chars) in text of size "
+                + (0) + " took " + (end - start) + "ms");
+
+        searcher = new SearchNaive();
+        start = System.currentTimeMillis();
+        Assert.assertEquals("Position of pattern", -1, searcher.search(textFile, patternFile));
+        end = System.currentTimeMillis();
+        System.out.println(searcher.getClass().getName() + ": Search of pattern (" + 10 + " chars) in text of size "
+                + (0) + " took " + (end - start) + "ms");
+    }
+
+    @Test
+    public void testTextAndPatternEmpty() throws Exception {
+        File patternFile = new File(TestData.getBasePath() + "PatternTestFile.txt");
+        File textFile = new File(TestData.getBasePath() + "TextTestFile.txt");
+        FileWriter writer = new FileWriter(patternFile);
+        writer.write("");
+        writer.close();
+        writer = new FileWriter(textFile);
+        writer.write("");
+        writer.close();
+
+        ISearchFile searcher = new SearchKMP();
+        long start = System.currentTimeMillis();
+        Assert.assertEquals("Position of pattern", -1, searcher.search(textFile, patternFile));
+        long end = System.currentTimeMillis();
+        System.out.println(searcher.getClass().getName() + ": Search of pattern (" + 0 + " chars) in text of size "
+                + (0) + " took " + (end - start) + "ms");
+
+        searcher = new SearchNaive();
+        start = System.currentTimeMillis();
+        Assert.assertEquals("Position of pattern", -1, searcher.search(textFile, patternFile));
+        end = System.currentTimeMillis();
+        System.out.println(searcher.getClass().getName() + ": Search of pattern (" + 0 + " chars) in text of size "
+                + (0) + " took " + (end - start) + "ms");
+    }
+
+    @Test
+    public void testPatternLargerThanText() throws Exception {
+        File patternFile = new File(TestData.getBasePath() + "PatternTestFile.txt");
+        File textFile = new File(TestData.getBasePath() + "TextTestFile.txt");
+        FileWriter writer = new FileWriter(patternFile);
+        writer.write("12345");
+        writer.close();
+        writer = new FileWriter(textFile);
+        writer.write("1234");
+        writer.close();
+
+        ISearchFile searcher = new SearchKMP();
+        long start = System.currentTimeMillis();
+        Assert.assertEquals("Position of pattern", -1, searcher.search(textFile, patternFile));
+        long end = System.currentTimeMillis();
+        System.out.println(searcher.getClass().getName() + ": Search of pattern (" + 5 + " chars) in text of size "
+                + (4) + " took " + (end - start) + "ms");
+
+        searcher = new SearchNaive();
+        start = System.currentTimeMillis();
+        Assert.assertEquals("Position of pattern", -1, searcher.search(textFile, patternFile));
+        end = System.currentTimeMillis();
+        System.out.println(searcher.getClass().getName() + ": Search of pattern (" + 5 + " chars) in text of size "
+                + (4) + " took " + (end - start) + "ms");
     }
 
     private void performTest(ISearchFile[] searchers, long patternLength, long patternPos) {

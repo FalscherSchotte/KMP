@@ -58,6 +58,10 @@ public class SearchNaive implements ISearchString, ISearchArray, ISearchFile {
             try {
                 textReader = new CustomReader(text);
                 patternReader = new CustomReader(pattern);
+
+                if (patternReader.getSize() <= 0 || textReader.getSize() <= 0 || textReader.getSize() < patternReader.getSize())
+                    return -1;
+
                 for (long baseIndex = 0; baseIndex < textReader.getSize(); baseIndex++) {
                     if (matches(textReader, patternReader, baseIndex))
                         return baseIndex;

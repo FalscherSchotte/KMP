@@ -92,6 +92,9 @@ public class SearchKMP implements ISearchString, ISearchArray, ISearchFile {
                 textReader = new CustomReader(textFile);
                 prefixWrapper = new PrefixFileWrapper();
 
+                if (patternReader1.getSize() <= 0 || textReader.getSize() <= 0 || textReader.getSize() < patternReader1.getSize())
+                    return -1;
+
                 createPrefixFile(patternReader1, patternReader2, prefixWrapper);
 
                 patternReader1.reset();
