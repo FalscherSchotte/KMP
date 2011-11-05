@@ -9,6 +9,7 @@ import java.util.List;
  * User: FloLap
  * Date: 28.10.11
  * Time: 17:30
+ * Wraps Reader and Writer for the prefixanalysis
  */
 public class PrefixFileWrapper {
     private List<PrefixFileInterval> prefixIntervalList = new ArrayList<PrefixFileInterval>();
@@ -16,11 +17,22 @@ public class PrefixFileWrapper {
     private long ctr = 0;
     private final int separationValue = 10000;
 
+    /**
+     * Creates a new Wrapper for the prefixes
+     *
+     * @throws IOException
+     */
     public PrefixFileWrapper() throws IOException {
         prefixBaseFile = new File(System.getProperty("java.io.tmpdir") + "kmp.prefix");
         prefixIntervalList.add(new PrefixFileInterval(prefixBaseFile, prefixIntervalList.size()));
     }
 
+    /**
+     * Write prefix value
+     *
+     * @param value Value to write
+     * @throws IOException Exception during writing
+     */
     public void write(long value) throws IOException {
         if ((int) (ctr / separationValue) >= prefixIntervalList.size())
             prefixIntervalList.add(new PrefixFileInterval(prefixBaseFile, prefixIntervalList.size()));
@@ -28,16 +40,33 @@ public class PrefixFileWrapper {
         ctr++;
     }
 
+    /**
+     * Reads the value at the given position
+     *
+     * @param index Index to read
+     * @return Read value
+     * @throws IOException Exception while reading
+     */
     public long read(long index) throws IOException {
         return prefixIntervalList.get((int) (index / separationValue)).read(index - index / separationValue * separationValue);
     }
 
+    /**
+     * Closes the reader and writer
+     *
+     * @throws IOException Exception while closing
+     */
     public void close() throws IOException {
         for (PrefixFileInterval interval : prefixIntervalList) {
             interval.close();
         }
     }
 
+    /**
+     * Resets the reader
+     *
+     * @throws IOException
+     */
     public void reset() throws IOException {
         for (PrefixFileInterval interval : prefixIntervalList) {
             interval.reset();

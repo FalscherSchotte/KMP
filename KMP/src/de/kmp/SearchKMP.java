@@ -11,6 +11,13 @@ import java.io.IOException;
  */
 public class SearchKMP implements ISearchString, ISearchArray, ISearchFile {
 
+    /**
+     * Perform search
+     *
+     * @param text    The target text in which the pattern should be found
+     * @param pattern The pattern to find
+     * @return Index or -1 if not found
+     */
     public int search(String text, String pattern) {
         if (text == null || text.length() <= 0)
             return -1;
@@ -30,13 +37,20 @@ public class SearchKMP implements ISearchString, ISearchArray, ISearchFile {
         return search(textArray, patternArray);
     }
 
+    /**
+     * Perform search
+     *
+     * @param text    The target text in which the pattern should be found
+     * @param pattern The pattern to find
+     * @return Index or -1 if not found
+     */
     public int search(String[] text, String[] pattern) {
         if (text == null || pattern == null || text.length == 0 || pattern.length == 0 || pattern.length > text.length)
             return -1;
         return kmpSearch(pattern, analyzePrefix(pattern), text);
     }
 
-    public static int[] analyzePrefix(String[] pattern) { //v with length n
+    private int[] analyzePrefix(String[] pattern) { //v with length n
         int patternPos = 0; //i - current Position in pattern
         int prefixLength = -1; //j - length of the found prefix
         int[] prefixValueArray = new int[pattern.length + 1]; //N[] with length n+1
@@ -56,7 +70,7 @@ public class SearchKMP implements ISearchString, ISearchArray, ISearchFile {
         return prefixValueArray;
     }
 
-    public static int kmpSearch(String[] pattern, int[] prefixValueArray, String[] textToAnalyze) {
+    private int kmpSearch(String[] pattern, int[] prefixValueArray, String[] textToAnalyze) {
         //pattern = v with length n
         //prefixValueArray = N with length n+1
         //textToAnalyze = t with length m
@@ -78,6 +92,14 @@ public class SearchKMP implements ISearchString, ISearchArray, ISearchFile {
         return -1; //No match found
     }
 
+
+    /**
+     * Perform search
+     *
+     * @param textFile    The target text in which the pattern should be found
+     * @param patternFile The pattern to find
+     * @return Index or -1 if not found
+     */
     public long search(File textFile, File patternFile) {
         CustomReader patternReader1 = null;
         CustomReader patternReader2 = null;

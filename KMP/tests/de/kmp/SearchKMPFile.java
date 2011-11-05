@@ -64,6 +64,34 @@ public class SearchKMPFile {
     }
 
     @Test
+    public void testManuel0() throws Exception {
+        File pattern = new File("E:\\HsKA\\Semester2\\Algorithmen Labor\\KMP\\tests\\de\\kmp\\ManuelTestCases\\pattern0.txt");
+        File text = new File("E:\\HsKA\\Semester2\\Algorithmen Labor\\KMP\\tests\\de\\kmp\\ManuelTestCases\\text0.txt");
+        performSpecificTest(new ISearchFile[]{kmp}, pattern, text, 1000);
+    }
+
+    @Test
+    public void testManuel1() throws Exception {
+        File pattern = new File("E:\\HsKA\\Semester2\\Algorithmen Labor\\KMP\\tests\\de\\kmp\\ManuelTestCases\\pattern1.txt");
+        File text = new File("E:\\HsKA\\Semester2\\Algorithmen Labor\\KMP\\tests\\de\\kmp\\ManuelTestCases\\text1.txt");
+        performSpecificTest(new ISearchFile[]{kmp}, pattern, text, 10000);
+    }
+
+    @Test
+    public void testManuel2() throws Exception {
+        File pattern = new File("E:\\HsKA\\Semester2\\Algorithmen Labor\\KMP\\tests\\de\\kmp\\ManuelTestCases\\pattern2.txt");
+        File text = new File("E:\\HsKA\\Semester2\\Algorithmen Labor\\KMP\\tests\\de\\kmp\\ManuelTestCases\\text2.txt");
+        performSpecificTest(new ISearchFile[]{kmp}, pattern, text, 100000);
+    }
+
+    @Test
+    public void testManuel3() throws Exception {
+        File pattern = new File("E:\\HsKA\\Semester2\\Algorithmen Labor\\KMP\\tests\\de\\kmp\\ManuelTestCases\\pattern3.txt");
+        File text = new File("E:\\HsKA\\Semester2\\Algorithmen Labor\\KMP\\tests\\de\\kmp\\ManuelTestCases\\text3.txt");
+        performSpecificTest(new ISearchFile[]{kmp}, pattern, text, 1000000);
+    }
+
+    @Test
     public void testPatternEmpty() throws Exception {
         File patternFile = new File(TestData.getBasePath() + "PatternTestFile.txt");
         File textFile = new File(TestData.getBasePath() + "TextTestFile.txt");
