@@ -15,7 +15,7 @@ public class PrefixFileWrapper {
     private List<PrefixFileInterval> prefixIntervalList = new ArrayList<PrefixFileInterval>();
     private File prefixBaseFile;
     private long ctr = 0;
-    private final int separationValue = 10000;
+    private final int separationValue = 1000000;
 
     /**
      * Creates a new Wrapper for the prefixes

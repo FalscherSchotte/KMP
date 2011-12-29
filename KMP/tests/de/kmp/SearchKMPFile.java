@@ -91,6 +91,45 @@ public class SearchKMPFile {
         performSpecificTest(new ISearchFile[]{kmp}, pattern, text, 1000000);
     }
 
+
+    @Test
+    public void testPape01() throws Exception {
+        File pattern = new File("E:\\HsKA\\Semester2\\Algorithmen Labor\\KMP\\tests\\de\\kmp\\PapeTestCases\\worst_case_39.txt");
+        File text = new File("E:\\HsKA\\Semester2\\Algorithmen Labor\\KMP\\tests\\de\\kmp\\PapeTestCases\\worst_case_39.txt");
+        performSpecificTest(new ISearchFile[]{kmp}, pattern, text, 0);
+    }
+
+
+    @Test
+    public void testPape02() throws Exception {
+        File pattern = new File("E:\\HsKA\\Semester2\\Algorithmen Labor\\KMP\\tests\\de\\kmp\\PapeTestCases\\worst_case_40.txt");
+        File text = new File("E:\\HsKA\\Semester2\\Algorithmen Labor\\KMP\\tests\\de\\kmp\\PapeTestCases\\worst_case_40.txt");
+        performSpecificTest(new ISearchFile[]{kmp}, pattern, text, 0);
+    }
+
+
+    @Test
+    public void testPape03() throws Exception {
+        File pattern = new File("E:\\HsKA\\Semester2\\Algorithmen Labor\\KMP\\tests\\de\\kmp\\PapeTestCases\\worst_case_41.txt");
+        File text = new File("E:\\HsKA\\Semester2\\Algorithmen Labor\\KMP\\tests\\de\\kmp\\PapeTestCases\\worst_case_41.txt");
+        performSpecificTest(new ISearchFile[]{kmp}, pattern, text, 0);
+    }
+
+
+    @Test
+    public void testPape04() throws Exception {
+        File pattern = new File("E:\\HsKA\\Semester2\\Algorithmen Labor\\KMP\\tests\\de\\kmp\\PapeTestCases\\worst_case_42.txt");
+        File text = new File("E:\\HsKA\\Semester2\\Algorithmen Labor\\KMP\\tests\\de\\kmp\\PapeTestCases\\worst_case_42.txt");
+        performSpecificTest(new ISearchFile[]{kmp}, pattern, text, 0);
+    }
+
+    @Test
+    public void testPape05() throws Exception {
+        File pattern = new File("E:\\HsKA\\Semester2\\Algorithmen Labor\\KMP\\tests\\de\\kmp\\PapeTestCases\\worst_case");
+        File text = new File("E:\\HsKA\\Semester2\\Algorithmen Labor\\KMP\\tests\\de\\kmp\\PapeTestCases\\worst_case");
+        performSpecificTest(new ISearchFile[]{kmp}, pattern, text, 0);
+    }
+
     @Test
     public void testPatternEmpty() throws Exception {
         File patternFile = new File(TestData.getBasePath() + "PatternTestFile.txt");

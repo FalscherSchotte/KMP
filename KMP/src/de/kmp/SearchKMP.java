@@ -2,6 +2,8 @@ package de.kmp;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * User: FloLap
@@ -116,12 +118,24 @@ public class SearchKMP implements ISearchString, ISearchArray, ISearchFile {
                 if (patternReader1.getSize() <= 0)
                     return -1;
 
+                System.out.println(getTimeString() + ": Starting KMP on patternfile '" + patternFile.getName() + "' and textfile '" + textFile.getName() + "'.");
+
+                System.out.println(getTimeString() + ": Starting prefix analysis.");
+                long startPrefix = System.currentTimeMillis();
                 createPrefixFile(patternReader1, patternReader2, prefixWrapper);
+                long endPrefix = System.currentTimeMillis();
+                System.out.println(getTimeString() + ": Prefix analysis finished after " + (endPrefix - startPrefix) + "ms.");
 
                 patternReader1.reset();
                 prefixWrapper.reset();
 
-                return kmpSearch(textReader, patternReader1, prefixWrapper);
+                System.out.println(getTimeString() + ": Starting search.");
+                long startSearch = System.currentTimeMillis();
+                long index = kmpSearch(textReader, patternReader1, prefixWrapper);
+                long endSearch = System.currentTimeMillis();
+                System.out.println(getTimeString() + ": Search finished after " + (endSearch - startSearch) + "ms.");
+
+                return index;
             } finally {
                 if (patternReader1 != null)
                     patternReader1.close();
@@ -142,6 +156,10 @@ public class SearchKMP implements ISearchString, ISearchArray, ISearchFile {
         long patternPos = 0;
         long prefixLength = -1;
 
+        long statusInc = patternReader1.getSize() / 100;
+        long statusMark = statusInc;
+        int statusCtr = 0;
+
         prefixWrapper.write(prefixLength);
         while (patternPos < patternReader1.getSize()) {
             while (prefixLength >= 0 && !patternReader1.read(prefixLength).equals(patternReader2.read(patternPos))) {
@@ -150,18 +168,42 @@ public class SearchKMP implements ISearchString, ISearchArray, ISearchFile {
             patternPos++;
             prefixLength++;
             prefixWrapper.write(prefixLength);
+
+            if (statusMark == patternPos) {
+                statusCtr++;
+                statusMark += statusInc;
+                System.out.println(getTimeString() + ": " + statusCtr + "% of prefix analysis complete.");
+            }
         }
+    }
+
+    private static SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
+
+    private static String getTimeString() {
+        return sdf.format(java.util.Calendar.getInstance().getTime());
     }
 
     private static long kmpSearch(CustomReader textReader, CustomReader patternReader, PrefixFileWrapper prefixWrapper) throws IOException {
         long textPosition = 0;
         long patternPosition = 0;
+
+        long statusInc = textReader.getSize() / 100;
+        long statusMark = statusInc;
+        int statusCtr = 0;
+
         while (textPosition < textReader.getSize()) {
             while (patternPosition >= 0 && !textReader.read(textPosition).equals(patternReader.read(patternPosition))) {
                 patternPosition = prefixWrapper.read(patternPosition);
             }
             textPosition++;
             patternPosition++;
+
+            if (statusMark == textPosition) {
+                statusCtr++;
+                statusMark += statusInc;
+                System.out.println(getTimeString() + ": " + statusCtr + "% of search complete.");
+            }
+
             if (patternPosition == patternReader.getSize())
                 return textPosition - patternReader.getSize();
         }
