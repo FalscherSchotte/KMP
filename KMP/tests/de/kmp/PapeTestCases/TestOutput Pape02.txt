@@ -1,0 +1,210 @@
+"C:\Program Files\Java\jdk1.6.0_26\bin\java" -Didea.launcher.port=7537 "-Didea.launcher.bin.path=C:\Program Files (x86)\JetBrains\IntelliJ IDEA Community Edition 10.5.1\bin" -Dfile.encoding=UTF-8 -classpath "C:\Program Files (x86)\JetBrains\IntelliJ IDEA Community Edition 10.5.1\lib\idea_rt.jar;C:\Program Files (x86)\JetBrains\IntelliJ IDEA Community Edition 10.5.1\plugins\junit\lib\junit-rt.jar;C:\Program Files\Java\jdk1.6.0_26\jre\lib\alt-rt.jar;C:\Program Files\Java\jdk1.6.0_26\jre\lib\alt-string.jar;C:\Program Files\Java\jdk1.6.0_26\jre\lib\charsets.jar;C:\Program Files\Java\jdk1.6.0_26\jre\lib\deploy.jar;C:\Program Files\Java\jdk1.6.0_26\jre\lib\javaws.jar;C:\Program Files\Java\jdk1.6.0_26\jre\lib\jce.jar;C:\Program Files\Java\jdk1.6.0_26\jre\lib\jsse.jar;C:\Program Files\Java\jdk1.6.0_26\jre\lib\management-agent.jar;C:\Program Files\Java\jdk1.6.0_26\jre\lib\plugin.jar;C:\Program Files\Java\jdk1.6.0_26\jre\lib\resources.jar;C:\Program Files\Java\jdk1.6.0_26\jre\lib\rt.jar;C:\Program Files\Java\jdk1.6.0_26\jre\lib\ext\dnsns.jar;C:\Program Files\Java\jdk1.6.0_26\jre\lib\ext\localedata.jar;C:\Program Files\Java\jdk1.6.0_26\jre\lib\ext\sunjce_provider.jar;E:\HsKA\Semester2\Algorithmen Labor\KMP\out\test\KMP;E:\HsKA\Semester2\Algorithmen Labor\KMP\out\production\KMP;C:\Program Files (x86)\JetBrains\IntelliJ IDEA Community Edition 10.5.1\lib\junit-4.8.jar" com.intellij.rt.execution.application.AppMain com.intellij.rt.execution.junit.JUnitStarter -ideVersion5 -junit4 de.kmp.SearchKMPFile,testPape02
+
+19:26:49: Starting KMP on patternfile 'worst_case_40.txt' and textfile 'worst_case_40.txt'.
+19:26:49: Starting prefix analysis.
+19:27:23: 1% of prefix analysis complete.
+19:27:56: 2% of prefix analysis complete.
+19:28:31: 3% of prefix analysis complete.
+19:29:05: 4% of prefix analysis complete.
+19:29:39: 5% of prefix analysis complete.
+19:30:15: 6% of prefix analysis complete.
+19:30:49: 7% of prefix analysis complete.
+19:31:23: 8% of prefix analysis complete.
+19:31:57: 9% of prefix analysis complete.
+19:32:33: 10% of prefix analysis complete.
+19:33:07: 11% of prefix analysis complete.
+19:33:41: 12% of prefix analysis complete.
+19:34:15: 13% of prefix analysis complete.
+19:34:49: 14% of prefix analysis complete.
+19:35:27: 15% of prefix analysis complete.
+19:36:01: 16% of prefix analysis complete.
+19:36:35: 17% of prefix analysis complete.
+19:37:07: 18% of prefix analysis complete.
+19:37:40: 19% of prefix analysis complete.
+19:38:14: 20% of prefix analysis complete.
+19:38:49: 21% of prefix analysis complete.
+19:39:24: 22% of prefix analysis complete.
+19:39:58: 23% of prefix analysis complete.
+19:40:38: 24% of prefix analysis complete.
+19:41:12: 25% of prefix analysis complete.
+19:41:46: 26% of prefix analysis complete.
+19:42:21: 27% of prefix analysis complete.
+19:42:55: 28% of prefix analysis complete.
+19:43:29: 29% of prefix analysis complete.
+19:44:03: 30% of prefix analysis complete.
+19:44:37: 31% of prefix analysis complete.
+19:45:11: 32% of prefix analysis complete.
+19:45:46: 33% of prefix analysis complete.
+19:46:20: 34% of prefix analysis complete.
+19:46:54: 35% of prefix analysis complete.
+19:47:28: 36% of prefix analysis complete.
+19:48:02: 37% of prefix analysis complete.
+19:48:36: 38% of prefix analysis complete.
+19:49:20: 39% of prefix analysis complete.
+19:49:54: 40% of prefix analysis complete.
+19:50:28: 41% of prefix analysis complete.
+19:51:02: 42% of prefix analysis complete.
+19:51:36: 43% of prefix analysis complete.
+19:52:10: 44% of prefix analysis complete.
+19:52:44: 45% of prefix analysis complete.
+19:53:19: 46% of prefix analysis complete.
+19:53:53: 47% of prefix analysis complete.
+19:54:27: 48% of prefix analysis complete.
+19:55:01: 49% of prefix analysis complete.
+19:55:35: 50% of prefix analysis complete.
+19:56:10: 51% of prefix analysis complete.
+19:56:44: 52% of prefix analysis complete.
+19:57:18: 53% of prefix analysis complete.
+19:57:52: 54% of prefix analysis complete.
+19:58:26: 55% of prefix analysis complete.
+19:59:00: 56% of prefix analysis complete.
+19:59:35: 57% of prefix analysis complete.
+20:00:09: 58% of prefix analysis complete.
+20:00:43: 59% of prefix analysis complete.
+20:01:17: 60% of prefix analysis complete.
+20:01:51: 61% of prefix analysis complete.
+20:02:42: 62% of prefix analysis complete.
+20:03:16: 63% of prefix analysis complete.
+20:03:50: 64% of prefix analysis complete.
+20:04:24: 65% of prefix analysis complete.
+20:04:58: 66% of prefix analysis complete.
+20:05:32: 67% of prefix analysis complete.
+20:06:06: 68% of prefix analysis complete.
+20:06:40: 69% of prefix analysis complete.
+20:07:14: 70% of prefix analysis complete.
+20:07:50: 71% of prefix analysis complete.
+20:08:25: 72% of prefix analysis complete.
+20:08:58: 73% of prefix analysis complete.
+20:09:32: 74% of prefix analysis complete.
+20:10:06: 75% of prefix analysis complete.
+20:10:40: 76% of prefix analysis complete.
+20:11:13: 77% of prefix analysis complete.
+20:11:48: 78% of prefix analysis complete.
+20:12:22: 79% of prefix analysis complete.
+20:12:58: 80% of prefix analysis complete.
+20:13:31: 81% of prefix analysis complete.
+20:14:06: 82% of prefix analysis complete.
+20:14:41: 83% of prefix analysis complete.
+20:15:17: 84% of prefix analysis complete.
+20:15:53: 85% of prefix analysis complete.
+20:16:28: 86% of prefix analysis complete.
+20:17:03: 87% of prefix analysis complete.
+20:17:37: 88% of prefix analysis complete.
+20:18:11: 89% of prefix analysis complete.
+20:18:45: 90% of prefix analysis complete.
+20:19:20: 91% of prefix analysis complete.
+20:19:54: 92% of prefix analysis complete.
+20:20:28: 93% of prefix analysis complete.
+20:21:02: 94% of prefix analysis complete.
+20:21:36: 95% of prefix analysis complete.
+20:22:10: 96% of prefix analysis complete.
+20:22:44: 97% of prefix analysis complete.
+20:23:19: 98% of prefix analysis complete.
+20:23:53: 99% of prefix analysis complete.
+20:24:27: 100% of prefix analysis complete.
+20:24:57: Prefix analysis finished after 3487849ms.
+20:24:57: Starting search.
+20:24:59: 1% of search complete.
+20:25:01: 2% of search complete.
+20:25:03: 3% of search complete.
+20:25:05: 4% of search complete.
+20:25:06: 5% of search complete.
+20:25:08: 6% of search complete.
+20:25:10: 7% of search complete.
+20:25:12: 8% of search complete.
+20:25:14: 9% of search complete.
+20:25:16: 10% of search complete.
+20:25:18: 11% of search complete.
+20:25:20: 12% of search complete.
+20:25:22: 13% of search complete.
+20:25:23: 14% of search complete.
+20:25:25: 15% of search complete.
+20:25:27: 16% of search complete.
+20:25:29: 17% of search complete.
+20:25:31: 18% of search complete.
+20:25:33: 19% of search complete.
+20:25:35: 20% of search complete.
+20:25:37: 21% of search complete.
+20:25:39: 22% of search complete.
+20:25:41: 23% of search complete.
+20:25:43: 24% of search complete.
+20:25:45: 25% of search complete.
+20:25:46: 26% of search complete.
+20:25:48: 27% of search complete.
+20:25:50: 28% of search complete.
+20:25:52: 29% of search complete.
+20:25:54: 30% of search complete.
+20:25:56: 31% of search complete.
+20:25:58: 32% of search complete.
+20:26:00: 33% of search complete.
+20:26:02: 34% of search complete.
+20:26:04: 35% of search complete.
+20:26:06: 36% of search complete.
+20:26:07: 37% of search complete.
+20:26:09: 38% of search complete.
+20:26:11: 39% of search complete.
+20:26:13: 40% of search complete.
+20:26:15: 41% of search complete.
+20:26:17: 42% of search complete.
+20:26:19: 43% of search complete.
+20:26:21: 44% of search complete.
+20:26:23: 45% of search complete.
+20:26:25: 46% of search complete.
+20:26:27: 47% of search complete.
+20:26:29: 48% of search complete.
+20:26:31: 49% of search complete.
+20:26:33: 50% of search complete.
+20:26:35: 51% of search complete.
+20:26:37: 52% of search complete.
+20:26:39: 53% of search complete.
+20:26:40: 54% of search complete.
+20:26:42: 55% of search complete.
+20:26:44: 56% of search complete.
+20:26:46: 57% of search complete.
+20:26:48: 58% of search complete.
+20:26:50: 59% of search complete.
+20:26:52: 60% of search complete.
+20:26:54: 61% of search complete.
+20:26:56: 62% of search complete.
+20:26:58: 63% of search complete.
+20:27:00: 64% of search complete.
+20:27:02: 65% of search complete.
+20:27:03: 66% of search complete.
+20:27:05: 67% of search complete.
+20:27:07: 68% of search complete.
+20:27:09: 69% of search complete.
+20:27:11: 70% of search complete.
+20:27:13: 71% of search complete.
+20:27:15: 72% of search complete.
+20:27:17: 73% of search complete.
+20:27:19: 74% of search complete.
+20:27:21: 75% of search complete.
+20:27:23: 76% of search complete.
+20:27:25: 77% of search complete.
+20:27:26: 78% of search complete.
+20:27:28: 79% of search complete.
+20:27:30: 80% of search complete.
+20:27:32: 81% of search complete.
+20:27:34: 82% of search complete.
+20:27:36: 83% of search complete.
+20:27:38: 84% of search complete.
+20:27:39: 85% of search complete.
+20:27:41: 86% of search complete.
+20:27:43: 87% of search complete.
+20:27:45: 88% of search complete.
+20:27:47: 89% of search complete.
+20:27:49: 90% of search complete.
+20:27:51: 91% of search complete.
+20:27:52: 92% of search complete.
+20:27:54: 93% of search complete.
+20:27:56: 94% of search complete.
+20:27:58: 95% of search complete.
+20:28:00: 96% of search complete.
+20:28:02: 97% of search complete.
+20:28:04: 98% of search complete.
+20:28:06: 99% of search complete.
+20:28:08: 100% of search complete.
+20:28:08: Search finished after 190996ms.
+de.kmp.SearchKMP: Search of pattern (worst_case_40.txt) in text (worst_case_40.txt) took 3679226ms
+
+Process finished with exit code 0
